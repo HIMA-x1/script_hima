@@ -1,122 +1,236 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LINEBET - Apple of Fortune</title>
     <style>
-        :root {
-            --bg-color: #0b141a;
-            --accent-green: #25c26e;
-            --accent-red: #ff4b55;
-            --card-bg: #121b22;
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #001a09; color: #fff; display: flex; justify-content: center; min-height: 100vh; }
+        .app-container { width: 100%; max-width: 450px; background: linear-gradient(180deg, #003311, #004d1a); padding: 15px; display: flex; flex-direction: column; }
+        
+        /* Top Bar */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; background: #001f0a; padding: 12px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .balance { font-size: 18px; font-weight: bold; cursor: pointer; }
+        .balance span { color: #00ff00; }
+        
+        /* Game Area */
+        h2 { text-align: center; font-size: 16px; margin-bottom: 15px; color: #fff; letter-spacing: 1px; }
+        .game-area { display: flex; gap: 5px; }
+        
+        .multiplier-col { display: flex; flex-direction: column-reverse; justify-content: space-between; padding-bottom: 40px; }
+        .multiplier-col span { font-size: 11px; color: #aaffaa; font-weight: bold; text-align: right; width: 40px; }
+        
+        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; flex-grow: 1; }
+        .barrel { 
+            background: radial-gradient(circle at 30% 30%, #a0522d, #5c2e0b); 
+            border: 2px solid #3a1a05; 
+            border-radius: 50%; 
+            aspect-ratio: 1; 
+            cursor: pointer; 
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.8); 
+            display: flex; justify-content: center; align-items: center; font-size: 24px;
+            transition: 0.2s;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; user-select: none; }
-        body { background: var(--bg-color); color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
-        .app-container { width: 100%; max-width: 420px; height: 100vh; max-height: 900px; background: #070e13; display: flex; flex-direction: column; position: relative; border: 1px solid rgba(37,194,110,0.3); }
-
-        .game-container { padding: 12px; display: flex; flex-direction: column; height: 100%; gap: 10px; }
-        .game-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
-        .online-badge { color: var(--accent-green); font-weight: bold; }
-        .balance-box { background: rgba(37,194,110,0.15); border: 1px solid var(--accent-green); padding: 4px 14px; border-radius: 20px; font-weight: bold; color: var(--accent-green); display: flex; align-items: center; gap: 6px; }
-        .balance-box button { background: var(--accent-green); border: none; color: #fff; width: 20px; height: 20px; border-radius: 50%; cursor: pointer; font-weight: bold; }
-
-        .game-title { text-align: center; font-size: 1rem; font-weight: bold; color: #ddd; letter-spacing: 1px; }
-
-        .apple-grid { display: flex; flex-direction: column; gap: 5px; background: rgba(0,0,0,0.4); padding: 8px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); flex-grow: 1; justify-content: center; }
-        .grid-row { display: flex; justify-content: space-between; gap: 5px; }
-        .apple-cell { flex: 1; aspect-ratio: 1; background: linear-gradient(135deg, #3a2618, #22150c); border: 2px solid #5a3d28; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); }
-        .apple-cell.revealed { background: rgba(37,194,110,0.3); border-color: var(--accent-green); }
-
-        .bet-controls { background: var(--card-bg); padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 8px; }
-        .stake-row { display: flex; gap: 8px; }
-        .stake-input-wrap { flex: 1; display: flex; align-items: center; background: #070a0f; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0 10px; }
-        .stake-input-wrap input { width: 100%; background: transparent; border: none; color: #fff; font-size: 1.1px; padding: 8px 0; outline: none; font-weight: bold; font-size: 1rem; }
-        .currency-label { color: #888; font-size: 0.9rem; }
-        .stake-btn { background: var(--accent-green); color: #fff; border: none; padding: 0 22px; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; }
-        .multiplier-chips { display: flex; gap: 6px; }
-        .chip-btn { flex: 1; background: #1c2638; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 8px 0; border-radius: 6px; font-size: 0.8rem; cursor: pointer; font-weight: bold; }
+        .barrel:active { transform: scale(0.9); }
+        .barrel.opened { background: none; border: none; box-shadow: none; cursor: default; }
+        
+        /* Controls */
+        .stake-section { margin-top: 20px; background: #002208; padding: 10px; border-radius: 8px; }
+        .stake-input { width: 100%; padding: 15px; background: #333; border: 1px solid #555; color: white; border-radius: 5px; font-size: 18px; text-align: center; font-weight: bold; margin-bottom: 10px; }
+        .btn-row { display: flex; gap: 8px; margin-bottom: 8px; }
+        .btn { flex: 1; padding: 12px 5px; border: none; border-radius: 5px; font-weight: bold; color: white; background: #00aa44; cursor: pointer; font-size: 13px; transition: 0.2s; }
+        .btn:hover { background: #008833; }
+        .btn.danger { background: #cc0000; }
+        .btn.danger:hover { background: #aa0000; }
+        
+        /* Admin Hidden */
+        .admin-hint { font-size: 10px; color: #555; text-align: center; margin-top: 15px; }
     </style>
 </head>
 <body>
-<div class="app-container">
-    <div class="game-container">
-        <div class="game-header">
-            <div class="online-badge">🟢 ONLINE: 930</div>
-            <div class="balance-box">
-                <span id="accountBalance">150.00</span> ج.م
-                <button onclick="addBalance()">+</button>
-            </div>
+
+    <div class="app-container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div>10012.42 EGP</div>
+            <div class="balance" onclick="adminCharge()">Balance: <span id="balanceDisplay">0.00</span> EGP</div>
         </div>
 
-        <div class="game-title">APPLE OF FORTUNE</div>
+        <h2>APPLE OF FORTUNE</h2>
 
-        <div class="apple-grid" id="appleGrid"></div>
+        <!-- Game Grid -->
+        <div class="game-area">
+            <div class="multiplier-col" id="multiplierCol"></div>
+            <div class="grid" id="grid"></div>
+        </div>
 
-        <div class="bet-controls">
-            <div class="stake-row">
-                <div class="stake-input-wrap">
-                    <input type="number" id="stakeInput" value="20" min="10" max="66319">
-                    <span class="currency-label">ج.م</span>
-                </div>
-                <button class="stake-btn" onclick="placeStake()">STAKE</button>
+        <!-- Controls -->
+        <div class="stake-section">
+            <input type="number" id="stakeAmount" class="stake-input" value="150" min="10">
+            <div class="btn-row">
+                <button class="btn" onclick="setStake('min')">MIN</button>
+                <button class="btn" onclick="setStake('x2')">X2</button>
+                <button class="btn" onclick="setStake('/2')">X/2</button>
+                <button class="btn" onclick="setStake('max')">MAX</button>
             </div>
-            <div class="multiplier-chips">
-                <button class="chip-btn" onclick="setStake(10)">MIN</button>
-                <button class="chip-btn" onclick="setStake(50)">X/2</button>
-                <button class="chip-btn" onclick="setStake(200)">X2</button>
-                <button class="chip-btn" onclick="setStake(1000)">MAX</button>
+            <div class="btn-row">
+                <button class="btn danger" onclick="startGame()">STAKE</button>
+                <button class="btn" onclick="cashOut()">TAKE WINNINGS</button>
             </div>
         </div>
+        <div class="admin-hint">Click "Balance" to simulate Admin Charge</div>
     </div>
-</div>
 
-<script>
-    let balance = 150.00;
-    const balanceEl = document.getElementById('accountBalance');
-    const stakeInput = document.getElementById('stakeInput');
-    const appleGrid = document.getElementById('appleGrid');
+    <script>
+        // Setup
+        const multipliers = [1.23, 1.50, 2.10, 3.50, 6.00, 12.00, 28.00, 75.00, 150.00, 349.68];
+        let currentBalance = 0.00;
+        let gameActive = false;
+        let currentRow = 0;
+        let currentMultiplier = 1.23;
+        let predictions = []; // Read from Zero Bet
 
-    function updateUI() {
-        balanceEl.textContent = balance.toFixed(2);
-    }
-    function setStake(val) { stakeInput.value = val; }
-    function addBalance() { balance += 150; updateUI(); }
-
-    function buildGrid() {
-        appleGrid.innerHTML = '';
-        for (let r = 0; r < 8; r++) {
-            const row = document.createElement('div');
-            row.className = 'grid-row';
-            for (let c = 0; c < 5; c++) {
-                const cell = document.createElement('div');
-                cell.className = 'apple-cell';
-                cell.textContent = '🪵';
-                row.appendChild(cell);
+        // Initialize Game
+        function init() {
+            renderMultipliers();
+            renderGrid();
+            updateBalance();
+            
+            // Get predictions from ZERO BET app
+            let savedPreds = localStorage.getItem('zeroBetPredictions');
+            if (savedPreds) {
+                predictions = JSON.parse(savedPreds);
+            } else {
+                // Fallback if Zero Bet wasn't played
+                for (let i = 0; i < 10; i++) predictions.push(Math.floor(Math.random() * 5));
             }
-            appleGrid.appendChild(row);
         }
-    }
 
-    function placeStake() {
-        const stake = Number(stakeInput.value);
-        if (stake <= 0) { alert('أدخل مبلغ صحيح!'); return; }
-        if (stake > balance) { alert('رصيدك غير كافٍ!'); return; }
-        
-        balance -= stake; // خصم المبلغ فوراً من رصيد الـ 150
-        updateUI();
-        buildGrid();
+        function renderMultipliers() {
+            let col = document.getElementById('multiplierCol');
+            multipliers.forEach(m => {
+                let span = document.createElement('span');
+                span.innerText = 'x' + m;
+                col.appendChild(span);
+            });
+        }
 
-        // إظهار تفاحة سليمة في الصف الأخير كمحاكاة
-        const rows = appleGrid.querySelectorAll('.grid-row');
-        const cells = rows[7].querySelectorAll('.apple-cell');
-        const safeIdx = Math.floor(Math.random() * 5);
-        cells[safeIdx].textContent = '🍎';
-        cells[safeIdx].classList.add('revealed');
-    }
+        function renderGrid() {
+            let grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            // Render from top to bottom visually, but logic uses row index (0 = bottom)
+            for (let visualRow = 9; visualRow >= 0; visualRow--) {
+                for (let col = 0; col < 5; col++) {
+                    let barrel = document.createElement('div');
+                    barrel.className = 'barrel';
+                    barrel.dataset.row = visualRow;
+                    barrel.dataset.col = col;
+                    barrel.onclick = () => clickBarrel(barrel, visualRow, col);
+                    grid.appendChild(barrel);
+                }
+            }
+        }
 
-    buildGrid();
-    updateUI();
-</script>
+        // Admin Panel (Click Balance to add money)
+        function adminCharge() {
+            let amount = prompt("Admin Panel: Enter amount to add:", "1000");
+            if (amount && !isNaN(amount)) {
+                currentBalance += parseFloat(amount);
+                updateBalance();
+            }
+        }
+
+        function updateBalance() {
+            document.getElementById('balanceDisplay').innerText = currentBalance.toFixed(2);
+        }
+
+        // Stake Controls
+        function setStake(type) {
+            let input = document.getElementById('stakeAmount');
+            let val = parseFloat(input.value) || 10;
+            if (type === 'min') input.value = 10;
+            if (type === 'x2') input.value = (val * 2).toFixed(2);
+            if (type === '/2') input.value = Math.max(10, (val / 2)).toFixed(2);
+            if (type === 'max') input.value = currentBalance > 0 ? currentBalance.toFixed(2) : 10;
+        }
+
+        // Game Logic
+        function startGame() {
+            let stake = parseFloat(document.getElementById('stakeAmount').value);
+            if (stake > currentBalance) {
+                alert("Insufficient balance! Click Balance for Admin Charge.");
+                return;
+            }
+            if (stake < 10) {
+                alert("Minimum stake is 10 EGP.");
+                return;
+            }
+
+            // Refresh predictions from Zero Bet in case it was updated
+            let savedPreds = localStorage.getItem('zeroBetPredictions');
+            if (savedPreds) predictions = JSON.parse(savedPreds);
+
+            currentBalance -= stake;
+            updateBalance();
+            
+            gameActive = true;
+            currentRow = 0;
+            currentMultiplier = multipliers[0];
+            
+            // Reset Grid
+            document.querySelectorAll('.barrel').forEach(b => {
+                b.classList.remove('opened');
+                b.innerText = '';
+            });
+            
+            alert("Game Started! Follow Zero Bet predictions. Start from the bottom row.");
+        }
+
+        function clickBarrel(el, row, col) {
+            if (!gameActive) return;
+            if (row !== currentRow) {
+                alert("You must play from bottom to top! Row " + (currentRow + 1) + " is next.");
+                return;
+            }
+            if (el.classList.contains('opened')) return;
+
+            // Check if this column matches the prediction for this row
+            let isWinner = (col === predictions[row]);
+            
+            el.classList.add('opened');
+            
+            if (isWinner) {
+                el.innerText = '🍄'; // Apple
+                currentMultiplier = multipliers[currentRow];
+                currentRow++;
+                if (currentRow === 10) {
+                    alert("Congratulations! You reached the top. Click TAKE WINNINGS.");
+                }
+            } else {
+                el.innerText = '💀'; // Skull
+                gameActive = false;
+                alert("Wrong barrel! You lost. Game Over.");
+            }
+        }
+
+        function cashOut() {
+            if (!gameActive && currentRow === 0) return;
+            if (currentRow === 0) {
+                alert("Open at least one barrel first.");
+                return;
+            }
+            
+            let stake = parseFloat(document.getElementById('stakeAmount').value);
+            let winnings = stake * currentMultiplier;
+            currentBalance += winnings;
+            updateBalance();
+            
+            gameActive = false;
+            alert(`Cashed out! You won ${winnings.toFixed(2)} EGP (x${currentMultiplier})`);
+        }
+
+        window.onload = init;
+    </script>
 </body>
 </html>
