@@ -22,7 +22,7 @@
         /* 1. خلفية الماتريكس */
         #matrixCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.4; pointer-events: none; }
 
-        /* 2. الرموز الطائرة في الخلفية */
+        /* 2. الرموز الطائرة */
         .floating-icons-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden; }
         .f-icon { position: absolute; bottom: -50px; opacity: 0; animation: floatUp linear infinite; }
         @keyframes floatUp {
@@ -40,7 +40,6 @@
         /* =============================== */
         #login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; width: 100%; padding: 15px; }
         
-        /* اللوجو الصغير في الدخول */
         .login-logo-img { width: 70px; height: 70px; object-fit: cover; border-radius: 15px; margin-bottom: 20px; border: 2px solid #ff0000; box-shadow: 0 0 20px rgba(255,0,0,0.6); }
 
         .online-badge { position: absolute; top: 20px; left: 20px; border: 2px solid #ff0000; padding: 8px 20px; border-radius: 10px; background: rgba(0,0,0,0.8); font-size: 14px; display: flex; align-items: center; gap: 10px; backdrop-filter: blur(5px); z-index: 10;}
@@ -55,7 +54,13 @@
         .input-container input { flex: 1; background: transparent; border: none; color: #fff; font-size: 15px; outline: none; padding: 5px; }
 
         .btn-login { border: 2px solid #ff0000; background: rgba(20, 0, 0, 0.9); color: #fff; padding: 12px 40px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 80%;}
-        .promo-text { margin-top: 15px; font-size: 14px; color: #aaa; }
+        
+        /* أيقونة التليجرام في شاشة الدخول */
+        .tg-login-link { margin-top: 15px; display: flex; align-items: center; gap: 8px; color: #0088cc; text-decoration: none; font-weight: bold; font-size: 14px; background: rgba(0, 136, 204, 0.1); padding: 8px 15px; border-radius: 20px; border: 1px solid #0088cc; transition: 0.3s;}
+        .tg-login-link:hover { background: rgba(0, 136, 204, 0.3); }
+        .tg-login-link svg { width: 20px; height: 20px; fill: #0088cc; }
+
+        .promo-text { margin-top: 10px; font-size: 14px; color: #aaa; }
         .promo-text span { color: #ff0000; font-weight: bold; }
 
         /* =============================== */
@@ -63,10 +68,8 @@
         /* =============================== */
         #game-screen { display: none; flex-direction: column; height: 100%; width: 100%; position: relative; }
         
-        /* الهيدر العلوي */
         .top-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(18, 11, 46, 0.8); backdrop-filter: blur(5px); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; border-bottom: 1px solid #331166; }
         
-        /* اللوجو الصغير جوه اللعبة (علامة مائية) */
         .header-logo { width: 45px; height: 45px; object-fit: cover; border-radius: 8px; border: 1px solid #ff0055; }
         
         .welcome-text { color: #d47b9a; font-size: 15px; line-height: 1.4; font-weight: bold; }
@@ -75,11 +78,9 @@
         .menu-btn { background: #dcdcdc; border: none; border-radius: 8px; width: 35px; height: 35px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; cursor: pointer; }
         .menu-btn div { width: 18px; height: 2px; background: #333; }
 
-        /* عداد الأونلاين العائم */
         .floating-online { position: absolute; top: 75px; left: 20px; border: 2px solid #00ffcc; padding: 5px 15px; border-radius: 20px; background: rgba(0,0,0,0.8); font-size: 12px; color: #fff; backdrop-filter: blur(4px); z-index: 10; box-shadow: 0 0 10px #00ffcc; }
         .floating-online span { color: #00ffcc; font-weight: bold; }
 
-        /* الكارت الرئيسي (أسود شفاف) */
         .main-card { 
             flex-grow: 1; 
             background: rgba(15, 10, 25, 0.85);
@@ -107,32 +108,48 @@
             transition: all 0.3s ease;
         }
         
-        .check-mark { color: #4caf50; font-weight: bold; font-size: 24px; }
+        /* علامة الصح الثابتة في الصف العلوي */
+        .static-check { 
+            color: #4caf50; 
+            font-weight: bold; 
+            font-size: 24px; 
+            display: inline-block;
+            animation: spinCheck 2s linear infinite;
+        }
+        @keyframes spinCheck {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* التفاحة في الصف السفلي */
         .apple-icon { font-size: 28px; }
+        
+        /* اللودينج */
         .spinner { border: 3px solid #f3f3f3; border-top: 3px solid #ff0055; border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* قسم الآي دي */
         .id-section { width: 60%; text-align: center; margin-bottom: 20px; }
         .id-label { font-size: 16px; color: #aaa; margin-bottom: 5px; }
         .id-value { border-bottom: 2px solid #ff0055; padding-bottom: 5px; font-size: 20px; font-weight: bold; color: #fff; height: 35px; text-shadow: 0 0 10px #ff0055;}
 
-        /* الأزرار */
         .action-buttons { width: 100%; display: flex; flex-direction: column; gap: 12px; }
         .action-btn { background: #130b2e; color: #fff; border: 1px solid #ff0055; border-radius: 25px; padding: 15px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 0 10px rgba(255,0,85,0.2); }
         .action-btn:hover { background: #ff0055; color: #fff; box-shadow: 0 0 20px rgba(255,0,85,0.6); }
 
         /* الشريط السفلي */
         .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: #1a103c; display: flex; justify-content: space-around; align-items: center; border-top-left-radius: 20px; border-top-right-radius: 20px; z-index: 10; padding-bottom: 10px; border-top: 1px solid #331166;}
-        .nav-icon { color: #fff; font-size: 24px; cursor: pointer; opacity: 0.6; transition: 0.3s; }
+        .nav-icon { color: #fff; font-size: 24px; cursor: pointer; opacity: 0.6; transition: 0.3s; display: flex; justify-content: center; align-items: center;}
         .nav-icon.active { opacity: 1; color: #d47b9a; }
-        .nav-icon.center-icon { background: #fff; color: #1a103c; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; margin-top: -20px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 20px; opacity: 1;}
+        
+        /* أيقونة التليجرام في الشريط السفلي */
+        .nav-icon svg { width: 28px; height: 28px; fill: #0088cc; }
+        
+        .nav-icon.center-icon { background: #fff; color: #1a103c; border-radius: 50%; width: 50px; height: 50px; margin-top: -20px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 20px; opacity: 1;}
 
     </style>
 </head>
 <body>
 
-    <!-- الخلفيات -->
     <canvas id="matrixCanvas"></canvas>
     <div class="floating-icons-container" id="floatingIcons"></div>
 
@@ -142,8 +159,6 @@
         <div id="login-screen">
             <div class="online-badge">Online <span id="login-online">78</span></div>
 
-            <!-- اللوجو في شاشة الدخول -->
-            <!-- ضع رابط صورة البانر بتاعك هنا في الـ src -->
             <img src="logo.png" alt="Logo" class="login-logo-img" onerror="this.style.display='none'">
 
             <div class="server-radio-group">
@@ -164,18 +179,20 @@
 
             <button class="btn-login" onclick="login()">تسجيل الدخول</button>
             
+            <!-- شعار التليجرام في الدخول مع اللينك الجديد -->
+            <a href="https://t.me/+YLOI8Jc3Gjg4OWFk" target="_blank" class="tg-login-link">
+                <svg viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+                Join Telegram Channel
+            </a>
+
             <div class="promo-text">PROMO : <span>TE100</span></div>
         </div>
 
         <!-- ==================== 2. شاشة اللعبة ==================== -->
         <div id="game-screen">
             
-            <!-- الهيدر -->
             <div class="top-header">
-                <!-- اللوجو الصغير جوه اللعبة -->
-                <!-- ضع رابط صورة البانر بتاعك هنا في الـ src -->
                 <img src="logo.png" alt="Logo" class="header-logo" onerror="this.style.display='none'">
-                
                 <div class="welcome-text">
                     Hellow Friends, <br> Welcome Back!
                 </div>
@@ -186,24 +203,20 @@
                 </button>
             </div>
 
-            <!-- عداد الأونلاين -->
             <div class="floating-online">ONLINE <span id="game-online">165</span></div>
 
-            <!-- الكارت الغامق -->
             <div class="main-card">
                 
-                <!-- شبكة 10 مربعات -->
+                <!-- شبكة 10 مربعات: الصف العلوي ثابت، والصف السفلي للتفاحة -->
                 <div class="grid-container" id="grid-container">
                     <!-- سيتم توليد المربعات هنا -->
                 </div>
 
-                <!-- قسم ID -->
                 <div class="id-section">
                     <div class="id-label">iD</div>
                     <div class="id-value" id="display-id">--------</div>
                 </div>
 
-                <!-- الأزرار -->
                 <div class="action-buttons">
                     <button class="action-btn" onclick="nextStage()">Stars</button>
                     <button class="action-btn" onclick="resetGame()">Stop</button>
@@ -215,7 +228,10 @@
                 <div class="nav-icon active">🏠</div>
                 <div class="nav-icon">📄</div>
                 <div class="nav-icon center-icon">✈️</div>
-                <div class="nav-icon" style="color: #5865F2; opacity: 1; background: #fff; border-radius: 50%; width: 35px; height: 35px; display: flex; justify-content: center; align-items: center;">👾</div>
+                <!-- شعار التليجرام في اللعبة مع اللينك الجديد -->
+                <a href="https://t.me/+YLOI8Jc3Gjg4OWFk" target="_blank" class="nav-icon">
+                    <svg viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+                </a>
                 <div class="nav-icon">👤</div>
             </div>
         </div>
@@ -265,9 +281,8 @@
         setInterval(createFloatingIcon, 500);
 
         // 3. المتغيرات الأساسية
-        let predictions = []; 
         let currentStage = 0;
-        const totalStages = 10;
+        const totalStages = 10; // إجمالي عدد الضغطات (10 مرات)
 
         setInterval(() => {
             let l = document.getElementById('login-online');
@@ -302,56 +317,60 @@
             const grid = document.getElementById('grid-container');
             grid.innerHTML = '';
             
+            // إنشاء 10 مربعات
             for (let i = 0; i < totalStages; i++) {
                 let box = document.createElement('div');
                 box.className = 'pink-box';
                 box.id = 'box-' + i;
+                // الصف الأول (العلوي) من 0 لـ 4، والصف الثاني (السفلي) من 5 لـ 9
                 grid.appendChild(box);
             }
             resetGame();
         }
 
-        // 6. توليد التوقعات
-        function generateNewGameData() {
-            predictions = [];
-            for (let i = 0; i < totalStages; i++) {
-                predictions.push(Math.floor(Math.random() * totalStages)); 
-            }
-            localStorage.setItem('zeroBetPreds', JSON.stringify(predictions));
+        // 6. دالة تصفير اللعبة (إعادة تعيين)
+        function resetGame() {
             currentStage = 0;
+            
+            // تصفير المربعات
+            for (let i = 0; i < totalStages; i++) {
+                let box = document.getElementById('box-' + i);
+                box.innerHTML = '';
+                if (i < 5) {
+                    // الصف العلوي: علامات صح ثابتة وبتلف
+                    box.innerHTML = '<span class="static-check">✔</span>';
+                }
+            }
+            
+            // إخفاء التفاحة من الصف السفلي (المربعات من 5 لـ 9)
+            for (let i = 5; i < 10; i++) {
+                document.getElementById('box-' + i).innerHTML = '';
+            }
         }
 
-        // 7. زر Stars
+        // 7. زر Stars (تحريك التفاحة في الصف السفلي)
         function nextStage() {
-            if (currentStage >= totalStages) {
+            if (currentStage >= 5) {
                 alert("لقد وصلت لنهاية اللعبة! اضغط Stop للبدء من جديد.");
                 return;
             }
 
-            let currentBoxIndex = predictions[currentStage];
-            let currentBox = document.getElementById('box-' + currentBoxIndex);
+            // مسح التفاحة القديمة من الصف السفلي (عشان متنقلش وتسب وراها حاجة)
+            for (let i = 5; i < 10; i++) {
+                document.getElementById('box-' + i).innerHTML = '';
+            }
+
+            // اختيار مكان عشوائي جديد للتفاحة في الصف السفلي (المربعات 5 إلى 9)
+            let randomIndex = Math.floor(Math.random() * 5) + 5;
+            let currentBox = document.getElementById('box-' + randomIndex);
             
+            // إظهار اللودينج ثم التفاحة
             currentBox.innerHTML = '<div class="spinner"></div>';
 
             setTimeout(() => {
-                if (currentStage > 0) {
-                    let prevBoxIndex = predictions[currentStage - 1];
-                    let prevBox = document.getElementById('box-' + prevBoxIndex);
-                    prevBox.innerHTML = '<span class="check-mark">✔</span>';
-                }
-
                 currentBox.innerHTML = '<span class="apple-icon">🍎</span>';
                 currentStage++;
-
-            }, 800);
-        }
-
-        // 8. زر Stop
-        function resetGame() {
-            generateNewGameData();
-            for (let i = 0; i < totalStages; i++) {
-                document.getElementById('box-' + i).innerHTML = '';
-            }
+            }, 300); // وقت قصير للودينج
         }
     </script>
 </body>
