@@ -24,18 +24,25 @@
         #matrixCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.4; pointer-events: none; }
         
         /* الحاوية الرئيسية */
-        .app-container { width: 100%; max-width: 450px; height: 100dvh; /* استخدمنا dvh عشان الموبايل */ position: relative; z-index: 1; display: flex; flex-direction: column; padding: 15px; }
-
-        /* إخفاء وإظهار - تم تصحيحه */
-        .hide { display: none !important; }
+        .app-container { width: 100%; max-width: 450px; height: 100dvh; position: relative; z-index: 1; display: flex; flex-direction: column; padding: 15px; }
 
         /* =============================== */
         /* 1. شاشة تسجيل الدخول (Login) */
         /* =============================== */
-        #login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; width: 100%; }
+        #login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; width: 100%; overflow-y: auto; padding-bottom: 20px; }
         
+        /* اللوجو في شاشة الدخول */
+        .login-logo-img { 
+            width: 90%; 
+            max-width: 350px; 
+            border-radius: 15px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+            border: 2px solid #ff0000;
+        }
+
         /* كارت أونلاين */
-        .online-badge { position: absolute; top: 20px; left: 20px; border: 2px solid #ff0000; padding: 8px 20px; border-radius: 10px; background: rgba(0,0,0,0.8); font-size: 14px; display: flex; align-items: center; gap: 10px; box-shadow: 0 0 10px rgba(255, 0, 0, 0.3); backdrop-filter: blur(5px); }
+        .online-badge { position: absolute; top: 20px; left: 20px; border: 2px solid #ff0000; padding: 8px 20px; border-radius: 10px; background: rgba(0,0,0,0.8); font-size: 14px; display: flex; align-items: center; gap: 10px; box-shadow: 0 0 10px rgba(255, 0, 0, 0.3); backdrop-filter: blur(5px); z-index: 10;}
         .online-badge span { color: #ff3333; font-weight: bold; }
 
         /* اختيار السيرفرات */
@@ -51,26 +58,32 @@
         .input-container input::placeholder { color: #888; }
 
         /* زر الدخول */
-        .btn-login { border: 2px solid #ff0000; background: rgba(20, 0, 0, 0.9); color: #fff; padding: 12px 40px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; box-shadow: 0 0 15px rgba(255, 0, 0, 0.2); backdrop-filter: blur(5px); }
+        .btn-login { border: 2px solid #ff0000; background: rgba(20, 0, 0, 0.9); color: #fff; padding: 12px 40px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; box-shadow: 0 0 15px rgba(255, 0, 0, 0.2); backdrop-filter: blur(5px); width: 80%;}
         .btn-login:hover { background: rgba(255, 0, 0, 0.3); box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
         
-        .promo-text { margin-top: 20px; font-size: 14px; color: #aaa; letter-spacing: 2px; text-shadow: 0 0 5px #000; }
+        .promo-text { margin-top: 15px; font-size: 14px; color: #aaa; letter-spacing: 2px; text-shadow: 0 0 5px #000; }
         .promo-text span { color: #ff0000; font-weight: bold; }
 
         /* =============================== */
         /* 2. شاشة اللعبة (Game Screen) */
         /* =============================== */
-        /* أهم تعديل: خليها display: flex عشان تظهر لما نشيل كلاس hide */
-        #game-screen { display: flex; flex-direction: column; height: 100%; width: 100%; }
+        #game-screen { display: none; flex-direction: column; height: 100%; width: 100%; }
         
         /* الشريط العلوي */
-        .top-bar { display: flex; justify-content: space-between; margin-bottom: 15px; margin-top: 10px; }
+        .top-bar { display: flex; justify-content: space-between; margin-bottom: 10px; margin-top: 5px; }
         .top-box { border: 2px solid #ffd700; border-radius: 10px; padding: 8px 15px; background: rgba(0,0,0,0.8); font-size: 13px; font-weight: bold; color: #ffd700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); backdrop-filter: blur(5px); }
         .top-box .val { color: #a020f0; font-weight: bold; } 
 
-        /* الشعار ZERO */
-        .zero-logo { text-align: center; font-size: 30px; font-weight: 900; color: rgba(255, 215, 0, 0.6); letter-spacing: 5px; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255, 215, 0, 0.4); display: flex; justify-content: center; align-items: center; gap: 10px; }
-        .zero-logo::before, .zero-logo::after { content: ''; flex: 1; height: 1px; background: rgba(255, 215, 0, 0.3); }
+        /* اللوجو في شاشة اللعبة */
+        .game-logo-img {
+            width: 100%;
+            max-height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
 
         /* حاوية اللعبة */
         .game-board-container { display: flex; gap: 8px; border: 2px solid #ffd700; border-radius: 15px; padding: 10px; background: rgba(0,0,0,0.7); flex-grow: 1; box-shadow: 0 0 15px rgba(255, 215, 0, 0.1); backdrop-filter: blur(5px); overflow-y: auto; }
@@ -110,7 +123,6 @@
 </head>
 <body>
 
-    <!-- خلفية الماتريكس -->
     <canvas id="matrixCanvas"></canvas>
 
     <div class="app-container">
@@ -119,14 +131,15 @@
         <div id="login-screen">
             <div class="online-badge">Online <span id="login-online">78</span></div>
 
-            <!-- اختيار السيرفر -->
+            <!-- اللوجو فوق حقول الإدخال -->
+            <img src="logo.png" alt="ZERO BET Logo" class="login-logo-img" onerror="this.style.display='none'">
+
             <div class="server-radio-group">
                 <label><input type="radio" name="server" value="Linbet" checked> <span>Linbet</span></label>
                 <label><input type="radio" name="server" value="Server1"> <span>Server1</span></label>
                 <label><input type="radio" name="server" value="SERVER2"> <span>SERVER2</span></label>
             </div>
 
-            <!-- حقول الإدخال -->
             <div class="input-container">
                 <div class="icon">ID</div>
                 <input type="text" id="player-id" placeholder="Enter Player ID" maxlength="10">
@@ -134,7 +147,7 @@
             
             <div class="input-container">
                 <div class="icon">🔑</div>
-                <input type="password" id="activation-code" placeholder="Enter the activation code">
+                <input type="password" id="activation-code" placeholder="Enter activation code">
             </div>
 
             <button class="btn-login" onclick="login()">تسجيل الدخول</button>
@@ -143,26 +156,20 @@
         </div>
 
         <!-- ==================== شاشة اللعبة ==================== -->
-        <!-- تم إضافة كلاس hide هنا مبدئياً -->
-        <div id="game-screen" class="hide">
-            <!-- الشريط العلوي -->
+        <div id="game-screen">
             <div class="top-bar">
                 <div class="top-box">ONLINE <span class="val" id="game-online">165</span></div>
                 <div class="top-box">ID : <span class="val" id="display-id">--------</span></div>
             </div>
 
-            <!-- شعار ZERO -->
-            <div class="zero-logo">
-                <span style="font-size: 24px; color: #ffd700;">👁️</span> ZERO
-            </div>
+            <!-- اللوجو فوق شبكة التفاحات -->
+            <img src="logo.png" alt="ZERO BET Banner" class="game-logo-img" onerror="this.style.display='none'">
 
-            <!-- لوحة اللعب -->
             <div class="game-board-container">
                 <div class="multipliers" id="multipliers-container"></div>
                 <div class="grid" id="grid-container"></div>
             </div>
 
-            <!-- أزرار التحكم -->
             <div class="bottom-controls">
                 <button class="action-btn" onclick="showApples()">SHOW APPLE</button>
                 <button class="action-btn" onclick="newGame()">NEW GAME</button>
@@ -172,48 +179,32 @@
     </div>
 
     <script>
-        // ==========================================
-        // 1. خلفية الماتريكس الأصلية (Matrix)
-        // ==========================================
+        // 1. خلفية الماتريكس
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
-
         const letters = "01ZEROBET10HACKTE100";
         const fontSize = 16;
         let columns = canvas.width / fontSize;
         let drops = [];
-        
         for (let x = 0; x < columns; x++) drops[x] = 1;
-
         function drawMatrix() {
             ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = "#ff0000"; // لون أحمر
+            ctx.fillStyle = "#ff0000";
             ctx.font = fontSize + "px monospace";
-            
             for (let i = 0; i < drops.length; i++) {
                 const text = letters[Math.floor(Math.random() * letters.length)];
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             }
         }
         setInterval(drawMatrix, 50);
 
-        // ==========================================
-        // 2. المتغيرات الأساسية وعداد الأونلاين
-        // ==========================================
+        // 2. المتغيرات
         const multipliers = [1.23, 1.54, 1.93, 2.41, 4.02, 6.71, 11.18, 27.92, 69.93, 349.68];
         let applePositions = []; 
         let isRevealed = false;
@@ -225,33 +216,30 @@
             if(g) g.innerText = Math.floor(Math.random() * 100) + 100;
         }, 3000);
 
-        // ==========================================
-        // 3. تسجيل الدخول وبدء اللعبة
-        // ==========================================
+        // 3. تسجيل الدخول
         function login() {
-            let id = document.getElementById('player-id').value;
-            let code = document.getElementById('activation-code').value;
+            let idValue = document.getElementById('player-id').value;
+            let passValue = document.getElementById('activation-code').value;
 
-            // التحقق من البيانات
-            if (id.length >= 5 && (code === "TE100" || code === "")) {
-                // إخفاء الدخول
-                document.getElementById('login-screen').classList.add('hide');
-                
-                // إظهار اللعبة (شيل كلاس hide)
-                document.getElementById('game-screen').classList.remove('hide');
-                
-                // تحديث الـ ID
-                document.getElementById('display-id').innerText = id;
-                
-                // تشغيل اللوحة
-                initBoard();
-            } else {
-                alert("Please enter a valid ID (min 5 chars) and Activation Code (TE100)");
+            if (idValue.length !== 10) {
+                alert("الآي دي (ID) لازم يكون 10 أرقام بالظبط!");
+                return; 
             }
+
+            if (passValue.toUpperCase() !== "TE100") {
+                alert("الباسورد غلط! اكتب TE100");
+                return;
+            }
+
+            // إخفاء الدخول وإظهار اللعبة
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('game-screen').style.display = 'flex'; 
+            document.getElementById('display-id').innerText = idValue; 
+            initBoard(); 
         }
 
+        // 4. رسم اللوحة
         function initBoard() {
-            // رسم المضاعفات
             const multContainer = document.getElementById('multipliers-container');
             multContainer.innerHTML = '';
             multipliers.forEach((mult, index) => {
@@ -261,24 +249,16 @@
                 multContainer.appendChild(div);
             });
 
-            // توليد لعبة جديدة ورسمها
             generateNewGameData();
             renderGrid();
         }
 
-        // ==========================================
-        // 4. توليد لعبة جديدة وحفظها
-        // ==========================================
         function generateNewGameData() {
             applePositions = [];
             for (let i = 0; i < 10; i++) {
-                applePositions.push(Math.floor(Math.random() * 5)); // 0 to 4
+                applePositions.push(Math.floor(Math.random() * 5)); 
             }
-            
-            // حفظ التوقعات في المتصفح عشان التطبيق التاني يقرأها
             localStorage.setItem('zeroBetPreds', JSON.stringify(applePositions));
-            console.log("New Game Generated & Saved:", applePositions);
-            
             isRevealed = false;
         }
 
@@ -294,11 +274,8 @@
                     cell.dataset.col = col;
                     
                     if (isRevealed) {
-                        if (col === applePositions[row]) {
-                            cell.classList.add('apple');
-                        } else {
-                            cell.classList.add('bad');
-                        }
+                        if (col === applePositions[row]) cell.classList.add('apple');
+                        else cell.classList.add('bad');
                     }
                     
                     cell.onclick = () => handleCellClick(cell, row, col);
@@ -307,27 +284,21 @@
             }
         }
 
-        // ==========================================
-        // 5. أزرار التحكم
-        // ==========================================
+        // 5. الأزرار
         function showApples() {
             isRevealed = true;
             renderGrid();
         }
 
         function newGame() {
-            generateNewGameData(); // بيولد توقعات جديدة ويحفظها
-            renderGrid();          // بيعيد رسم الشبكة
+            generateNewGameData(); 
+            renderGrid();          
         }
 
         function handleCellClick(cell, row, col) {
             if (isRevealed) return; 
-
-            if (col === applePositions[row]) {
-                cell.classList.add('apple');
-            } else {
-                cell.classList.add('bad');
-            }
+            if (col === applePositions[row]) cell.classList.add('apple');
+            else cell.classList.add('bad');
         }
     </script>
 </body>
