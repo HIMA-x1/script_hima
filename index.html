@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZERO BET</title>
+    <style>
+        :root {
+            --bg-dark: #03070c;
+            --accent-green: #00ff66;
+            --accent-red: #ff3344;
+            --card-bg: rgba(5, 12, 20, 0.95);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; user-select: none; }
+        body { 
+            background-color: var(--bg-dark); 
+            background-image: linear-gradient(rgba(0,255,102,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,102,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: #fff; min-height: 100vh; display: flex; justify-content: center; align-items: center; 
+        }
+        .app-container { width: 100%; max-width: 420px; height: 100vh; max-height: 900px; background: #020408; position: relative; display: flex; flex-direction: column; border: 1px solid rgba(0,255,102,0.2); }
+        .screen { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; padding: 15px; overflow-y: auto; background: var(--bg-dark); }
+        .screen.hidden { display: none !important; }
+
+        .login-box { margin: auto; width: 100%; background: var(--card-bg); border: 2px solid var(--accent-green); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 0 25px rgba(0,255,102,0.3); }
+        .promo-badge { background: linear-gradient(90deg, #00ff66, #008833); color: #000; text-align: center; padding: 6px; border-radius: 6px; font-weight: bold; font-size: 0.85rem; }
+        .login-box h2 { text-align: center; font-size: 1.3rem; color: var(--accent-green); }
+        .login-sub { font-size: 0.78rem; color: #aaa; text-align: center; line-height: 1.4; }
+        .login-box label { font-size: 0.8rem; color: #00ff66; }
+        .login-box input { width: 100%; background: #010408; border: 1px solid rgba(0,255,102,0.3); border-radius: 8px; padding: 10px; color: #fff; outline: none; }
+        .servers-row { display: flex; gap: 15px; font-size: 0.85rem; color: #ddd; justify-content: center; margin: 4px 0; }
+        .btn-main { background: var(--accent-green); color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; text-align: center; }
+        .telegram-btn { background: #229ed9; color: #fff; text-decoration: none; padding: 10px; border-radius: 8px; text-align: center; font-size: 0.85rem; font-weight: bold; display: block; margin-top: 5px; }
+
+        .game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 0.85rem; }
+        .online-badge { color: var(--accent-green); font-weight: bold; }
+        .balance-box { background: rgba(0,255,102,0.15); border: 1px solid var(--accent-green); padding: 4px 12px; border-radius: 20px; font-weight: bold; color: var(--accent-green); }
+        .game-title { text-align: center; font-size: 1rem; font-weight: bold; color: #fff; margin-bottom: 6px; }
+        .notice-bar { background: rgba(255,51,68,0.2); border: 1px solid var(--accent-red); color: #ff99aa; padding: 5px; border-radius: 6px; font-size: 0.75rem; text-align: center; margin-bottom: 10px; }
+
+        .apple-grid { display: flex; flex-direction: column; gap: 5px; background: rgba(0,0,0,0.6); padding: 8px; border-radius: 10px; border: 1px solid rgba(0,255,102,0.2); margin-bottom: 10px; }
+        .grid-row { display: flex; justify-content: space-between; gap: 5px; }
+        .apple-cell { flex: 1; aspect-ratio: 1; background: linear-gradient(135deg, #221810, #110c08); border: 2px solid #442a1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+        .apple-cell.safe { background: rgba(0,255,102,0.3); border-color: var(--accent-green); }
+        .apple-cell.danger { background: rgba(255,51,68,0.3); border-color: var(--accent-red); }
+
+        .controls-row { display: flex; gap: 8px; margin-top: auto; }
+        .action-btn { flex: 1; padding: 11px; border: none; border-radius: 8px; font-weight: bold; font-size: 0.9rem; color: #fff; cursor: pointer; }
+        .btn-show { background: #00aa44; }
+        .btn-new { background: var(--accent-red); }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div id="loginScreen" class="screen">
+        <div class="login-box">
+            <div class="promo-badge">PROMO CODE: TE100 ⚡</div>
+            <h2>ZERO BET LOGIN</h2>
+            <p class="login-sub">لضمان تشغيل السكريبت سجل بالبروموكود <b>TE100</b>.</p>
+            <label>Enter ID (10 أرقام)</label>
+            <input type="text" id="userIdInput" maxlength="10" placeholder="أدخل آي دي الحساب">
+            <label>Enter Password</label>
+            <input type="password" id="passInput" placeholder="كلمة المرور">
+            <div class="servers-row">
+                <label><input type="radio" name="srv" checked> Server 1</label>
+                <label><input type="radio" name="srv"> Server 2</label>
+            </div>
+            <button class="btn-main" onclick="handleLogin()">الدخول ⚡</button>
+            <a href="https://t.me/YourChannel" target="_blank" class="telegram-btn">💬 قناة التليجرام الرسمية</a>
+        </div>
+    </div>
+
+    <div id="gameScreen" class="screen hidden">
+        <div class="game-header">
+            <div class="online-badge">🟢 ONLINE: 930</div>
+            <div class="balance-box" id="displayBalance">150.00 ج.م</div>
+        </div>
+        <div class="game-title">ZERO BET — APPLE OF FORTUNE</div>
+        <div class="notice-bar">⚠️ تنبيه: آخرك في السكريبت الدور 69</div>
+        <div class="apple-grid" id="mainGrid"></div>
+        <div class="controls-row">
+            <button class="action-btn btn-show" onclick="revealSafeApple()">SHOW ALL</button>
+            <button class="action-btn btn-new" onclick="resetGame()">NEW GAME</button>
+        </div>
+    </div>
+</div>
+<script>
+    let currentBalance = 150.00;
+    let currentRow = 7;
+    function handleLogin() {
+        const id = document.getElementById('userIdInput').value.trim();
+        if(id.length < 10) { alert('أدخل آي دي صحيح (10 أرقام).'); return; }
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('gameScreen').classList.remove('hidden');
+        buildGrid();
+    }
+    function buildGrid() {
+        const grid = document.getElementById('mainGrid');
+        grid.innerHTML = '';
+        for (let r = 0; r < 8; r++) {
+            const row = document.createElement('div');
+            row.className = 'grid-row';
+            for (let c = 0; c < 5; c++) {
+                const cell = document.createElement('div');
+                cell.className = 'apple-cell';
+                cell.textContent = '🪵';
+                row.appendChild(cell);
+            }
+            grid.appendChild(row);
+        }
+        currentRow = 7;
+    }
+    function revealSafeApple() {
+        if(currentRow < 0) { alert('أكملت حتى الدور 69 بنجاح!'); return; }
+        if(currentBalance >= 20) {
+            currentBalance -= 20;
+            document.getElementById('displayBalance').textContent = currentBalance.toFixed(2) + ' ج.م';
+        }
+        const rows = document.querySelectorAll('.grid-row');
+        const cells = rows[currentRow].querySelectorAll('.apple-cell');
+        const safeIdx = (currentRow * 3) % 5;
+        cells.forEach((cell, idx) => {
+            if(idx === safeIdx) { cell.textContent = '🍎'; cell.classList.add('safe'); }
+            else { cell.textContent = '🍏'; cell.classList.add('danger'); }
+        });
+        currentRow--;
+    }
+    function resetGame() { buildGrid(); }
+</script>
+</body>
+</html>
