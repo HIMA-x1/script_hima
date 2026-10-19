@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZERO BET - Official</title>
+    <title>ZERO BET - Predictor</title>
     <style>
         /* إعدادات عامة */
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
         
-        /* الخلفية السوداء الأساسية */
         body { 
-            background-color: #000; 
+            background-color: #050005; 
             color: #fff; 
             display: flex; 
             justify-content: center; 
@@ -20,124 +19,137 @@
             position: relative;
         }
         
-        /* خلفية الماتريكس (الكانفاس) */
+        /* 1. خلفية الماتريكس */
         #matrixCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.4; pointer-events: none; }
+
+        /* 2. الرموز الطائرة في الخلفية */
+        .floating-icons-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden; }
+        .f-icon { position: absolute; bottom: -50px; opacity: 0; animation: floatUp linear infinite; }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
         
         /* الحاوية الرئيسية */
-        .app-container { width: 100%; max-width: 450px; height: 100dvh; position: relative; z-index: 1; display: flex; flex-direction: column; padding: 15px; }
+        .app-container { width: 100%; max-width: 450px; height: 100dvh; position: relative; z-index: 1; display: flex; flex-direction: column; }
 
         /* =============================== */
-        /* 1. شاشة تسجيل الدخول (Login) */
+        /* 1. شاشة تسجيل الدخول */
         /* =============================== */
-        #login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; width: 100%; overflow-y: auto; padding-bottom: 20px; }
+        #login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; width: 100%; padding: 15px; }
         
-        /* اللوجو في شاشة الدخول */
-        .login-logo-img { 
-            width: 90%; 
-            max-width: 350px; 
-            border-radius: 15px; 
-            margin-bottom: 20px; 
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
-            border: 2px solid #ff0000;
-        }
+        /* اللوجو الصغير في الدخول */
+        .login-logo-img { width: 70px; height: 70px; object-fit: cover; border-radius: 15px; margin-bottom: 20px; border: 2px solid #ff0000; box-shadow: 0 0 20px rgba(255,0,0,0.6); }
 
-        /* كارت أونلاين */
-        .online-badge { position: absolute; top: 20px; left: 20px; border: 2px solid #ff0000; padding: 8px 20px; border-radius: 10px; background: rgba(0,0,0,0.8); font-size: 14px; display: flex; align-items: center; gap: 10px; box-shadow: 0 0 10px rgba(255, 0, 0, 0.3); backdrop-filter: blur(5px); z-index: 10;}
+        .online-badge { position: absolute; top: 20px; left: 20px; border: 2px solid #ff0000; padding: 8px 20px; border-radius: 10px; background: rgba(0,0,0,0.8); font-size: 14px; display: flex; align-items: center; gap: 10px; backdrop-filter: blur(5px); z-index: 10;}
         .online-badge span { color: #ff3333; font-weight: bold; }
 
-        /* اختيار السيرفرات */
-        .server-radio-group { display: flex; gap: 15px; border: 2px solid #ff0000; border-radius: 10px; padding: 12px 20px; margin-bottom: 20px; background: rgba(0,0,0,0.85); width: 100%; justify-content: center; box-shadow: 0 0 10px rgba(255, 0, 0, 0.2); backdrop-filter: blur(5px); }
+        .server-radio-group { display: flex; gap: 15px; border: 2px solid #ff0000; border-radius: 10px; padding: 12px 20px; margin-bottom: 20px; background: rgba(0,0,0,0.85); width: 100%; justify-content: center; }
         .server-radio-group label { display: flex; align-items: center; gap: 5px; font-size: 13px; cursor: pointer; color: #aaa; }
-        .server-radio-group input[type="radio"] { accent-color: #ff0000; cursor: pointer; }
         .server-radio-group input[type="radio"]:checked + span { color: #fff; font-weight: bold; text-shadow: 0 0 5px #fff; }
 
-        /* حقول الإدخال */
-        .input-container { width: 100%; border: 2px solid #ff0000; border-radius: 10px; padding: 10px; margin-bottom: 15px; background: rgba(0,0,0,0.85); display: flex; align-items: center; gap: 10px; box-shadow: 0 0 10px rgba(255, 0, 0, 0.2); backdrop-filter: blur(5px); }
+        .input-container { width: 100%; border: 2px solid #ff0000; border-radius: 10px; padding: 10px; margin-bottom: 15px; background: rgba(0,0,0,0.85); display: flex; align-items: center; gap: 10px; }
         .input-container .icon { color: #555; font-weight: bold; font-size: 18px; padding: 0 10px; border-right: 1px solid #333; }
-        .input-container input { flex: 1; background: transparent; border: none; color: #fff; font-size: 15px; outline: none; padding: 5px; letter-spacing: 1px; }
-        .input-container input::placeholder { color: #888; }
+        .input-container input { flex: 1; background: transparent; border: none; color: #fff; font-size: 15px; outline: none; padding: 5px; }
 
-        /* زر الدخول */
-        .btn-login { border: 2px solid #ff0000; background: rgba(20, 0, 0, 0.9); color: #fff; padding: 12px 40px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; box-shadow: 0 0 15px rgba(255, 0, 0, 0.2); backdrop-filter: blur(5px); width: 80%;}
-        .btn-login:hover { background: rgba(255, 0, 0, 0.3); box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
-        
-        .promo-text { margin-top: 15px; font-size: 14px; color: #aaa; letter-spacing: 2px; text-shadow: 0 0 5px #000; }
+        .btn-login { border: 2px solid #ff0000; background: rgba(20, 0, 0, 0.9); color: #fff; padding: 12px 40px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 80%;}
+        .promo-text { margin-top: 15px; font-size: 14px; color: #aaa; }
         .promo-text span { color: #ff0000; font-weight: bold; }
 
         /* =============================== */
-        /* 2. شاشة اللعبة (Game Screen) */
+        /* 2. شاشة اللعبة */
         /* =============================== */
-        #game-screen { display: none; flex-direction: column; height: 100%; width: 100%; }
+        #game-screen { display: none; flex-direction: column; height: 100%; width: 100%; position: relative; }
         
-        /* الشريط العلوي */
-        .top-bar { display: flex; justify-content: space-between; margin-bottom: 10px; margin-top: 5px; }
-        .top-box { border: 2px solid #ffd700; border-radius: 10px; padding: 8px 15px; background: rgba(0,0,0,0.8); font-size: 13px; font-weight: bold; color: #ffd700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); backdrop-filter: blur(5px); }
-        .top-box .val { color: #a020f0; font-weight: bold; } 
+        /* الهيدر العلوي */
+        .top-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(18, 11, 46, 0.8); backdrop-filter: blur(5px); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; border-bottom: 1px solid #331166; }
+        
+        /* اللوجو الصغير جوه اللعبة (علامة مائية) */
+        .header-logo { width: 45px; height: 45px; object-fit: cover; border-radius: 8px; border: 1px solid #ff0055; }
+        
+        .welcome-text { color: #d47b9a; font-size: 15px; line-height: 1.4; font-weight: bold; }
+        .welcome-text span { color: #fff; }
+        
+        .menu-btn { background: #dcdcdc; border: none; border-radius: 8px; width: 35px; height: 35px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; cursor: pointer; }
+        .menu-btn div { width: 18px; height: 2px; background: #333; }
 
-        /* اللوجو في شاشة اللعبة */
-        .game-logo-img {
-            width: 100%;
-            max-height: 100px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            border: 2px solid #ffd700;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        /* عداد الأونلاين العائم */
+        .floating-online { position: absolute; top: 75px; left: 20px; border: 2px solid #00ffcc; padding: 5px 15px; border-radius: 20px; background: rgba(0,0,0,0.8); font-size: 12px; color: #fff; backdrop-filter: blur(4px); z-index: 10; box-shadow: 0 0 10px #00ffcc; }
+        .floating-online span { color: #00ffcc; font-weight: bold; }
+
+        /* الكارت الرئيسي (أسود شفاف) */
+        .main-card { 
+            flex-grow: 1; 
+            background: rgba(15, 10, 25, 0.85);
+            backdrop-filter: blur(15px);
+            border: 1px solid #ff0055;
+            border-top-left-radius: 40px; 
+            border-top-right-radius: 40px; 
+            margin-top: 10px; 
+            padding: 25px 20px; 
+            display: flex; flex-direction: column; align-items: center; 
+            position: relative; z-index: 2; overflow-y: auto; 
+            box-shadow: 0 -10px 30px rgba(255, 0, 85, 0.2);
         }
 
-        /* حاوية اللعبة */
-        .game-board-container { display: flex; gap: 8px; border: 2px solid #ffd700; border-radius: 15px; padding: 10px; background: rgba(0,0,0,0.7); flex-grow: 1; box-shadow: 0 0 15px rgba(255, 215, 0, 0.1); backdrop-filter: blur(5px); overflow-y: auto; }
+        /* شبكة المربعات (2x5) */
+        .grid-container { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; width: 100%; margin-bottom: 25px; margin-top: 20px;}
         
-        /* عمود المضاعفات */
-        .multipliers { display: flex; flex-direction: column-reverse; justify-content: space-around; padding: 5px 0; width: 65px; }
-        .mult-box { border: 2px solid #ffd700; border-radius: 8px; padding: 5px; text-align: center; font-size: 11px; font-weight: bold; color: #ffd700; background: rgba(0,0,0,0.85); box-shadow: inset 0 0 5px rgba(255, 215, 0, 0.2); }
-        .mult-box.high { color: #ff0000; border-color: #ff0000; box-shadow: 0 0 8px rgba(255, 0, 0, 0.3); }
-
-        /* شبكة البراميل */
-        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; flex-grow: 1; }
-        .cell { 
+        .pink-box { 
             aspect-ratio: 1; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            position: relative;
-            background: radial-gradient(circle at 30% 30%, #a0522d, #4a1c00); 
-            border: 2px solid #2b0d00;
-            box-shadow: inset 0 -4px 6px rgba(0,0,0,0.6), 0 2px 4px rgba(0,0,0,0.4);
-            transition: transform 0.2s;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 22px;
+            background: #fce4ec;
+            border-radius: 15px; 
+            display: flex; justify-content: center; align-items: center; 
+            font-size: 22px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5); 
+            transition: all 0.3s ease;
         }
-        .cell::before { content: ''; position: absolute; width: 70%; height: 70%; border-radius: 50%; border: 1px dashed rgba(0,0,0,0.4); }
+        
+        .check-mark { color: #4caf50; font-weight: bold; font-size: 24px; }
+        .apple-icon { font-size: 28px; }
+        .spinner { border: 3px solid #f3f3f3; border-top: 3px solid #ff0055; border-radius: 50%; width: 25px; height: 25px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* حالة كشف التفاحة */
-        .cell.apple { background: radial-gradient(circle at 30% 30%, #4caf50, #1b5e20); border-color: #0a2a0a; }
-        /* حالة كشف المكان الخطأ */
-        .cell.bad { background: radial-gradient(circle at 30% 30%, #e6c280, #a67c00); border-color: #4a3000; }
+        /* قسم الآي دي */
+        .id-section { width: 60%; text-align: center; margin-bottom: 20px; }
+        .id-label { font-size: 16px; color: #aaa; margin-bottom: 5px; }
+        .id-value { border-bottom: 2px solid #ff0055; padding-bottom: 5px; font-size: 20px; font-weight: bold; color: #fff; height: 35px; text-shadow: 0 0 10px #ff0055;}
 
-        /* أزرار التحكم السفلية */
-        .bottom-controls { display: flex; gap: 10px; margin-top: 15px; padding-bottom: 10px; }
-        .action-btn { flex: 1; border: 2px solid #ffd700; background: rgba(0,0,0,0.8); color: #fff; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; letter-spacing: 1px; transition: 0.3s; box-shadow: 0 0 10px rgba(255, 215, 0, 0.1); backdrop-filter: blur(5px); }
-        .action-btn:hover { background: rgba(255, 215, 0, 0.2); box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); }
+        /* الأزرار */
+        .action-buttons { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+        .action-btn { background: #130b2e; color: #fff; border: 1px solid #ff0055; border-radius: 25px; padding: 15px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 0 10px rgba(255,0,85,0.2); }
+        .action-btn:hover { background: #ff0055; color: #fff; box-shadow: 0 0 20px rgba(255,0,85,0.6); }
+
+        /* الشريط السفلي */
+        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: #1a103c; display: flex; justify-content: space-around; align-items: center; border-top-left-radius: 20px; border-top-right-radius: 20px; z-index: 10; padding-bottom: 10px; border-top: 1px solid #331166;}
+        .nav-icon { color: #fff; font-size: 24px; cursor: pointer; opacity: 0.6; transition: 0.3s; }
+        .nav-icon.active { opacity: 1; color: #d47b9a; }
+        .nav-icon.center-icon { background: #fff; color: #1a103c; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; margin-top: -20px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 20px; opacity: 1;}
 
     </style>
 </head>
 <body>
 
+    <!-- الخلفيات -->
     <canvas id="matrixCanvas"></canvas>
+    <div class="floating-icons-container" id="floatingIcons"></div>
 
     <div class="app-container">
         
-        <!-- ==================== شاشة الدخول ==================== -->
+        <!-- ==================== 1. شاشة الدخول ==================== -->
         <div id="login-screen">
             <div class="online-badge">Online <span id="login-online">78</span></div>
 
-            <!-- اللوجو فوق حقول الإدخال -->
-            <img src="logo.png" alt="ZERO BET Logo" class="login-logo-img" onerror="this.style.display='none'">
+            <!-- اللوجو في شاشة الدخول -->
+            <!-- ضع رابط صورة البانر بتاعك هنا في الـ src -->
+            <img src="logo.png" alt="Logo" class="login-logo-img" onerror="this.style.display='none'">
 
             <div class="server-radio-group">
-                <label><input type="radio" name="server" value="Linbet" checked> <span>Linbet</span></label>
-                <label><input type="radio" name="server" value="Server1"> <span>Server1</span></label>
-                <label><input type="radio" name="server" value="SERVER2"> <span>SERVER2</span></label>
+                <label><input type="radio" name="server" checked> <span>Linbet</span></label>
+                <label><input type="radio" name="server"> <span>Server1</span></label>
+                <label><input type="radio" name="server"> <span>SERVER2</span></label>
             </div>
 
             <div class="input-container">
@@ -155,24 +167,56 @@
             <div class="promo-text">PROMO : <span>TE100</span></div>
         </div>
 
-        <!-- ==================== شاشة اللعبة ==================== -->
+        <!-- ==================== 2. شاشة اللعبة ==================== -->
         <div id="game-screen">
-            <div class="top-bar">
-                <div class="top-box">ONLINE <span class="val" id="game-online">165</span></div>
-                <div class="top-box">ID : <span class="val" id="display-id">--------</span></div>
+            
+            <!-- الهيدر -->
+            <div class="top-header">
+                <!-- اللوجو الصغير جوه اللعبة -->
+                <!-- ضع رابط صورة البانر بتاعك هنا في الـ src -->
+                <img src="logo.png" alt="Logo" class="header-logo" onerror="this.style.display='none'">
+                
+                <div class="welcome-text">
+                    Hellow Friends, <br> Welcome Back!
+                </div>
+                <button class="menu-btn">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </button>
             </div>
 
-            <!-- اللوجو فوق شبكة التفاحات -->
-            <img src="logo.png" alt="ZERO BET Banner" class="game-logo-img" onerror="this.style.display='none'">
+            <!-- عداد الأونلاين -->
+            <div class="floating-online">ONLINE <span id="game-online">165</span></div>
 
-            <div class="game-board-container">
-                <div class="multipliers" id="multipliers-container"></div>
-                <div class="grid" id="grid-container"></div>
+            <!-- الكارت الغامق -->
+            <div class="main-card">
+                
+                <!-- شبكة 10 مربعات -->
+                <div class="grid-container" id="grid-container">
+                    <!-- سيتم توليد المربعات هنا -->
+                </div>
+
+                <!-- قسم ID -->
+                <div class="id-section">
+                    <div class="id-label">iD</div>
+                    <div class="id-value" id="display-id">--------</div>
+                </div>
+
+                <!-- الأزرار -->
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="nextStage()">Stars</button>
+                    <button class="action-btn" onclick="resetGame()">Stop</button>
+                </div>
             </div>
 
-            <div class="bottom-controls">
-                <button class="action-btn" onclick="showApples()">SHOW APPLE</button>
-                <button class="action-btn" onclick="newGame()">NEW GAME</button>
+            <!-- الشريط السفلي -->
+            <div class="bottom-nav">
+                <div class="nav-icon active">🏠</div>
+                <div class="nav-icon">📄</div>
+                <div class="nav-icon center-icon">✈️</div>
+                <div class="nav-icon" style="color: #5865F2; opacity: 1; background: #fff; border-radius: 50%; width: 35px; height: 35px; display: flex; justify-content: center; align-items: center;">👾</div>
+                <div class="nav-icon">👤</div>
             </div>
         </div>
 
@@ -204,10 +248,26 @@
         }
         setInterval(drawMatrix, 50);
 
-        // 2. المتغيرات
-        const multipliers = [1.23, 1.54, 1.93, 2.41, 4.02, 6.71, 11.18, 27.92, 69.93, 349.68];
-        let applePositions = []; 
-        let isRevealed = false;
+        // 2. الرموز الطائرة
+        const iconsContainer = document.getElementById('floatingIcons');
+        const iconList = ['💎', '🍎', '✈️', '➕', '🍒', '🎲'];
+        function createFloatingIcon() {
+            const icon = document.createElement('div');
+            icon.className = 'f-icon';
+            icon.innerText = iconList[Math.floor(Math.random() * iconList.length)];
+            icon.style.left = Math.random() * 100 + 'vw';
+            icon.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            icon.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            icon.style.animationDelay = (Math.random() * 2) + 's';
+            iconsContainer.appendChild(icon);
+            setTimeout(() => { icon.remove(); }, 10000);
+        }
+        setInterval(createFloatingIcon, 500);
+
+        // 3. المتغيرات الأساسية
+        let predictions = []; 
+        let currentStage = 0;
+        const totalStages = 10;
 
         setInterval(() => {
             let l = document.getElementById('login-online');
@@ -216,7 +276,7 @@
             if(g) g.innerText = Math.floor(Math.random() * 100) + 100;
         }, 3000);
 
-        // 3. تسجيل الدخول
+        // 4. تسجيل الدخول
         function login() {
             let idValue = document.getElementById('player-id').value;
             let passValue = document.getElementById('activation-code').value;
@@ -231,74 +291,67 @@
                 return;
             }
 
-            // إخفاء الدخول وإظهار اللعبة
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('game-screen').style.display = 'flex'; 
-            document.getElementById('display-id').innerText = idValue; 
+            document.getElementById('display-id').innerText = idValue;
             initBoard(); 
         }
 
-        // 4. رسم اللوحة
+        // 5. رسم اللوحة (10 مربعات)
         function initBoard() {
-            const multContainer = document.getElementById('multipliers-container');
-            multContainer.innerHTML = '';
-            multipliers.forEach((mult, index) => {
-                let div = document.createElement('div');
-                div.className = 'mult-box' + (index >= 7 ? ' high' : '');
-                div.innerText = 'x' + mult;
-                multContainer.appendChild(div);
-            });
-
-            generateNewGameData();
-            renderGrid();
-        }
-
-        function generateNewGameData() {
-            applePositions = [];
-            for (let i = 0; i < 10; i++) {
-                applePositions.push(Math.floor(Math.random() * 5)); 
-            }
-            localStorage.setItem('zeroBetPreds', JSON.stringify(applePositions));
-            isRevealed = false;
-        }
-
-        function renderGrid() {
             const grid = document.getElementById('grid-container');
             grid.innerHTML = '';
             
-            for (let row = 9; row >= 0; row--) {
-                for (let col = 0; col < 5; col++) {
-                    let cell = document.createElement('div');
-                    cell.className = 'cell';
-                    cell.dataset.row = row;
-                    cell.dataset.col = col;
-                    
-                    if (isRevealed) {
-                        if (col === applePositions[row]) cell.classList.add('apple');
-                        else cell.classList.add('bad');
-                    }
-                    
-                    cell.onclick = () => handleCellClick(cell, row, col);
-                    grid.appendChild(cell);
-                }
+            for (let i = 0; i < totalStages; i++) {
+                let box = document.createElement('div');
+                box.className = 'pink-box';
+                box.id = 'box-' + i;
+                grid.appendChild(box);
             }
+            resetGame();
         }
 
-        // 5. الأزرار
-        function showApples() {
-            isRevealed = true;
-            renderGrid();
+        // 6. توليد التوقعات
+        function generateNewGameData() {
+            predictions = [];
+            for (let i = 0; i < totalStages; i++) {
+                predictions.push(Math.floor(Math.random() * totalStages)); 
+            }
+            localStorage.setItem('zeroBetPreds', JSON.stringify(predictions));
+            currentStage = 0;
         }
 
-        function newGame() {
-            generateNewGameData(); 
-            renderGrid();          
+        // 7. زر Stars
+        function nextStage() {
+            if (currentStage >= totalStages) {
+                alert("لقد وصلت لنهاية اللعبة! اضغط Stop للبدء من جديد.");
+                return;
+            }
+
+            let currentBoxIndex = predictions[currentStage];
+            let currentBox = document.getElementById('box-' + currentBoxIndex);
+            
+            currentBox.innerHTML = '<div class="spinner"></div>';
+
+            setTimeout(() => {
+                if (currentStage > 0) {
+                    let prevBoxIndex = predictions[currentStage - 1];
+                    let prevBox = document.getElementById('box-' + prevBoxIndex);
+                    prevBox.innerHTML = '<span class="check-mark">✔</span>';
+                }
+
+                currentBox.innerHTML = '<span class="apple-icon">🍎</span>';
+                currentStage++;
+
+            }, 800);
         }
 
-        function handleCellClick(cell, row, col) {
-            if (isRevealed) return; 
-            if (col === applePositions[row]) cell.classList.add('apple');
-            else cell.classList.add('bad');
+        // 8. زر Stop
+        function resetGame() {
+            generateNewGameData();
+            for (let i = 0; i < totalStages; i++) {
+                document.getElementById('box-' + i).innerHTML = '';
+            }
         }
     </script>
 </body>
