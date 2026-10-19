@@ -1,177 +1,134 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZERO BET - Predictor</title>
+    <title>ZERO BET - Hacker Predictor</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Courier New', Courier, monospace; }
-        body { background-color: #000; color: #fff; overflow-x: hidden; min-height: 100vh; display: flex; justify-content: center; }
-        #matrixCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.3; }
-        .app-container { width: 100%; max-width: 450px; position: relative; z-index: 1; padding: 20px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0a0a0a; color: #fff; display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
         
-        /* Login & UI Elements */
-        .login-box, .main-app { background: rgba(10, 0, 0, 0.9); border: 1px solid #ff0000; padding: 20px; border-radius: 10px; box-shadow: 0 0 15px #ff0000; text-align: center; }
-        .promo-box { background: #ff0000; padding: 12px; border-radius: 5px; margin: 15px 0; cursor: pointer; font-weight: bold; font-size: 18px; transition: 0.3s; }
-        .promo-box:hover { background: #cc0000; box-shadow: 0 0 15px #ff0000; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #111; border: 1px solid #555; color: #00ff00; border-radius: 5px; text-align: center; font-size: 16px; }
-        button { width: 100%; padding: 12px; background: #ff0000; color: #fff; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 16px; }
-        button:hover { background: #cc0000; }
+        /* خلفية الهكر */
+        .app-container { width: 100%; max-width: 450px; position: relative; z-index: 1; padding: 20px; background: linear-gradient(180deg, rgba(10,10,10,0.8), rgba(40,0,0,0.9)), url('https://i.imgur.com/your_reaper_image.jpg') center/cover; min-height: 100vh; display: flex; flex-direction: column; }
         
-        /* Top Controls */
-        .top-controls { display: flex; gap: 10px; margin-bottom: 15px; }
-        .top-controls button { background: #333; border: 1px solid #ff0000; padding: 8px; font-size: 12px; }
-        .top-controls button.active { background: #ff0000; }
-        .online-counter { color: #00ff00; font-size: 14px; margin-bottom: 10px; }
+        .hacker-header { text-align: center; margin-bottom: 20px; border: 2px solid #ff0000; border-radius: 10px; padding: 15px; background: rgba(0,0,0,0.7); box-shadow: 0 0 15px #ff0000; }
+        .hacker-header h2 { color: #ff0000; letter-spacing: 2px; text-shadow: 0 0 10px #ff0000; margin-bottom: 5px; }
+        .hacker-header p { color: #aaa; font-size: 12px; }
+
+        /* شاشة الدخول */
+        .login-box { background: rgba(0,0,0,0.8); padding: 20px; border-radius: 10px; border: 1px solid #333; margin-top: 50px; }
+        .login-box input { width: 100%; padding: 12px; margin-bottom: 10px; background: #111; border: 1px solid #ff0000; color: #fff; border-radius: 5px; text-align: center; }
+        .login-box button { width: 100%; padding: 12px; background: #ff0000; color: #fff; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+
+        /* واجهة التوقعات */
+        .predictor-ui { display: none; flex-direction: column; align-items: center; background: #fff; padding: 20px; border-radius: 20px; margin-top: 20px; box-shadow: 0 0 20px rgba(255,0,0,0.5); }
+        .boxes-row { display: flex; gap: 10px; margin-bottom: 20px; }
+        .predict-box { width: 50px; height: 50px; background: #fce4ec; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 24px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); transition: 0.3s; }
+        .predict-box.active { background: #ffeb3b; box-shadow: 0 0 15px #ffeb3b; transform: scale(1.1); }
         
-        /* Grid */
-        .grid-container { display: flex; flex-direction: column; gap: 5px; }
-        .row-wrapper { display: flex; align-items: center; justify-content: space-between; }
-        .odds { color: #ffcc00; font-size: 12px; width: 60px; text-align: right; font-weight: bold; }
-        .row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; flex-grow: 1; }
-        .cell { background: #222; border: 1px solid #444; height: 40px; border-radius: 5px; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 20px; transition: 0.2s; }
-        .cell.revealed { background: #004400; border-color: #00ff00; box-shadow: 0 0 10px #00ff00; }
-        .cell.wrong { background: #440000; border-color: #ff0000; }
+        .control-btns { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        .btn-dark { width: 100%; padding: 15px; background: #1a1a2e; color: #fff; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; }
+        .btn-dark:active { background: #16213e; }
         
-        /* Toast */
-        #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #00ff00; color: #000; padding: 10px 20px; border-radius: 5px; font-weight: bold; display: none; z-index: 999; }
+        .instruction { font-size: 14px; color: #333; text-align: center; margin-bottom: 15px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <canvas id="matrixCanvas"></canvas>
-    <div id="toast">Promo Code Copied!</div>
-
     <div class="app-container">
-        <!-- Login Screen -->
-        <div class="login-box" id="loginBox">
-            <h2 style="color: #ff0000; margin-bottom: 10px;">ZERO BET</h2>
-            <p style="font-size: 12px; color: #aaa;">Prediction Engine v2.0</p>
-            <input type="text" id="playerId" placeholder="Enter 10-Digit ID" maxlength="10">
-            <div class="promo-box" onclick="copyPromo()">USE PROMO CODE: TE100</div>
-            <button onclick="login()">LOGIN</button>
+        <!-- شاشة الدخول -->
+        <div id="loginScreen">
+            <div class="hacker-header">
+                <h2>ZERO BET</h2>
+                <p>Cyber Prediction Engine</p>
+            </div>
+            <div class="login-box">
+                <input type="text" id="playerId" placeholder="Player ID (10 Digits)">
+                <input type="password" id="playerPass" placeholder="Password (TE100)">
+                <button onclick="login()">تسجيل الدخول</button>
+            </div>
         </div>
 
-        <!-- Main Prediction Screen -->
-        <div class="main-app" id="mainApp" style="display: none;">
-            <div class="top-controls">
-                <button onclick="selectServer(this, 'Server 1')">Server 1</button>
-                <button onclick="selectServer(this, 'Server 2')">Server 2</button>
-                <button onclick="selectServer(this, 'No Server')">Cancel</button>
-            </div>
-            <div class="online-counter">Online Users: <span id="onlineUsers">2,451</span></div>
-            <p style="font-size: 12px; color: #aaa; margin-bottom: 10px;">Click cells to reveal prediction (Bottom to Top)</p>
+        <!-- واجهة التوقع -->
+        <div id="predictorScreen" class="predictor-ui">
+            <div class="instruction" id="instructionText">اضغط على "بدء التوقع" لمعرفة مكان التفاحة</div>
             
-            <div class="grid-container" id="gridContainer"></div>
+            <!-- الخمس مربعات -->
+            <div class="boxes-row" id="boxesRow">
+                <div class="predict-box" id="box0"></div>
+                <div class="predict-box" id="box1"></div>
+                <div class="predict-box" id="box2"></div>
+                <div class="predict-box" id="box3"></div>
+                <div class="predict-box" id="box4"></div>
+            </div>
+
+            <div class="control-btns">
+                <button class="btn-dark" onclick="revealNext()">بدء التوقع (Start)</button>
+                <button class="btn-dark" style="background:#b71c1c;" onclick="resetGame()">تصفير اللعبة (Reset)</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // Matrix Background
-        const canvas = document.getElementById('matrixCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const letters = "01ZEROBET";
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = [];
-        for (let x = 0; x < columns; x++) drops[x] = 1;
-
-        function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#ff0000";
-            ctx.font = fontSize + "px monospace";
-            for (let i = 0; i < drops.length; i++) {
-                const text = letters[Math.floor(Math.random() * letters.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            }
-        }
-        setInterval(drawMatrix, 50);
-
-        // Online Users Animation
-        setInterval(() => {
-            let el = document.getElementById('onlineUsers');
-            let num = parseInt(el.innerText.replace(/,/g, ''));
-            num += Math.floor(Math.random() * 10) - 5;
-            el.innerText = num.toLocaleString();
-        }, 2000);
-
-        // Logic
         let predictions = [];
-        const multipliers = [1.23, 1.50, 2.10, 3.50, 6.00, 12.00, 28.00, 75.00, 150.00, 349.68];
-
-        function copyPromo() {
-            navigator.clipboard.writeText("TE100");
-            let toast = document.getElementById('toast');
-            toast.style.display = 'block';
-            setTimeout(() => toast.style.display = 'none', 2000);
-        }
-
-        function selectServer(btn, name) {
-            document.querySelectorAll('.top-controls button').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        }
+        let currentRevealRow = 0;
 
         function login() {
             let id = document.getElementById('playerId').value;
-            if (id.length === 10 || id === "") {
-                document.getElementById('loginBox').style.display = 'none';
-                document.getElementById('mainApp').style.display = 'block';
-                generatePredictions();
-                renderGrid();
+            let pass = document.getElementById('playerPass').value;
+
+            if (id.length === 10 && pass.toUpperCase() === 'TE100') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('predictorScreen').style.display = 'flex';
+                generateNewGame();
             } else {
-                alert("Please enter a 10-digit ID.");
+                alert("تأكد من الـ ID (10 أرقام) والباسورد (TE100)");
             }
         }
 
-        function generatePredictions() {
+        function generateNewGame() {
             predictions = [];
             for (let i = 0; i < 10; i++) {
                 predictions.push(Math.floor(Math.random() * 5)); // 0 to 4
             }
-            // Save predictions to localStorage so LINEBET app can read it
-            localStorage.setItem('zeroBetPredictions', JSON.stringify(predictions));
+            // حفظ التوقعات عشان تطبيق التاني يقراها
+            localStorage.setItem('zeroBetPreds', JSON.stringify(predictions));
+            localStorage.setItem('zeroBetRow', 0);
+            
+            currentRevealRow = 0;
+            resetBoxes();
+            document.getElementById('instructionText').innerText = "جاهز! اضغط Start عشان تبدأ الجولة الأولى في اللعبة.";
         }
 
-        function renderGrid() {
-            let container = document.getElementById('gridContainer');
-            container.innerHTML = '';
-            
-            for (let row = 9; row >= 0; row--) {
-                let rowWrapper = document.createElement('div');
-                rowWrapper.className = 'row-wrapper';
-
-                let odds = document.createElement('div');
-                odds.className = 'odds';
-                odds.innerText = 'x' + multipliers[row];
-                
-                let rowDiv = document.createElement('div');
-                rowDiv.className = 'row';
-
-                for (let col = 0; col < 5; col++) {
-                    let cell = document.createElement('div');
-                    cell.className = 'cell';
-                    cell.innerText = '?';
-                    cell.onclick = () => {
-                        if (cell.classList.contains('revealed') || cell.classList.contains('wrong')) return;
-                        if (col === predictions[row]) {
-                            cell.classList.add('revealed');
-                            cell.innerText = '🍄';
-                        } else {
-                            cell.classList.add('wrong');
-                            cell.innerText = '❌';
-                        }
-                    };
-                    rowDiv.appendChild(cell);
-                }
-                rowWrapper.appendChild(odds);
-                rowWrapper.appendChild(rowDiv);
-                container.appendChild(rowWrapper);
+        function resetBoxes() {
+            for(let i=0; i<5; i++) {
+                document.getElementById('box'+i).innerText = '';
+                document.getElementById('box'+i).classList.remove('active');
             }
+        }
+
+        function revealNext() {
+            if (currentRevealRow >= 10) {
+                alert("وصلت للنهاية! اعمل تصفير للعبة من فضلك.");
+                return;
+            }
+
+            resetBoxes();
+            let correctBoxIndex = predictions[currentRevealRow];
+            
+            // إظهار التفاحة
+            document.getElementById('box'+correctBoxIndex).innerText = '🍄';
+            document.getElementById('box'+correctBoxIndex).classList.add('active');
+            
+            document.getElementById('instructionText').innerText = `الجولة ${currentRevealRow + 1}: التفاحة في المربع رقم ${correctBoxIndex + 1}`;
+            
+            // تحديث الصف عشان اللعبة التانية تقرأه
+            localStorage.setItem('zeroBetRow', currentRevealRow);
+            currentRevealRow++;
+        }
+
+        function resetGame() {
+            generateNewGame();
         }
     </script>
 </body>
