@@ -1,160 +1,122 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LINEBET - Apple of Fortune</title>
+    <title>Apple of Fortune - Linebet</title>
     <style>
-        /* إعدادات عامة */
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; user-select: none; }
+        body { background-color: #000; display: flex; justify-content: center; min-height: 100vh; overflow: hidden; }
         
-        body { 
-            background-color: #000; 
-            display: flex; 
-            justify-content: center; 
-            min-height: 100vh; 
-            overflow: hidden; 
-        }
+        .app-container { width: 100%; max-width: 450px; height: 100dvh; position: relative; display: flex; flex-direction: column; background: linear-gradient(180deg, rgba(0,30,10,0.4), rgba(0,50,20,0.7)), url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1000&auto=format&fit=crop') center/cover; }
         
-        /* حاوية التطبيق */
-        .app-container { 
-            width: 100%; 
-            max-width: 450px; 
-            height: 100dvh; 
-            position: relative; 
-            display: flex; 
-            flex-direction: column; 
-            background-color: #f0f0f0;
-            overflow: hidden;
-        }
-        
-        /* 1. شاشة تسجيل الدخول */
-        #login-screen { display: flex; flex-direction: column; align-items: center; padding: 40px 20px; height: 100%; background: #f4f4f4;}
-        
-        .logo-container { width: 120px; height: 120px; background: #222; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .logo-text { color: white; font-weight: bold; font-size: 24px; text-align: center; line-height: 1.2;}
+        /* شاشة الدخول */
+        #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; height: 100%; background: #111; position: absolute; top: 0; left: 0; width: 100%; z-index: 100;}
+        .logo-container { width: 100px; height: 100px; background: #222; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; }
+        .logo-text { color: white; font-weight: bold; font-size: 20px; text-align: center; line-height: 1.2;}
         .logo-text span { color: #ff3333; }
-        
-        .telegram-link { font-size: 14px; color: #333; margin-bottom: 30px; font-weight: bold; }
-        
         .input-group { width: 100%; margin-bottom: 15px; }
-        .input-group input { width: 100%; padding: 15px; border-radius: 10px; border: 1px solid #ccc; background: #fff; font-size: 16px; outline: none; }
+        .input-group input { width: 100%; padding: 15px; border-radius: 10px; border: 1px solid #333; background: #222; color: #fff; font-size: 16px; outline: none; }
+        .btn-login { width: 100%; padding: 15px; background: #cc0000; color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
         
-        .btn-login { width: 100%; padding: 15px; background: #cc0000; color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 10px rgba(204,0,0,0.3); }
-        
-        .btn-admin { width: 100%; padding: 15px; background: #e0e0e0; color: #333; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 15px; }
-        
-        /* 2. شاشة الأدمن */
-        #admin-screen { display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; height: 100%; background: #fff; }
-        .admin-title { font-size: 20px; margin-bottom: 20px; color: #333; }
-        .admin-input { width: 80%; padding: 15px; border: none; border-bottom: 2px solid #0099cc; font-size: 20px; text-align: center; margin-bottom: 20px; outline: none; }
-        .btn-send-money { padding: 15px 40px; background: #ccc; color: #333; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        /* شاشة الأدمن */
+        #admin-screen { display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; height: 100%; background: #111; position: absolute; top: 0; left: 0; width: 100%; z-index: 100; }
+        .admin-title { font-size: 20px; margin-bottom: 20px; color: #fff; }
+        .admin-input { width: 80%; padding: 15px; border: none; border-bottom: 2px solid #ffd700; background: #222; color: #fff; font-size: 20px; text-align: center; margin-bottom: 20px; outline: none; }
+        .btn-send-money { padding: 15px 40px; background: #ffd700; color: #000; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; }
+        .btn-back { margin-top: 20px; color: #aaa; cursor: pointer; text-decoration: underline; }
 
-        /* 3. شاشة اللعبة */
-        #game-screen { 
-            display: none; 
-            flex-direction: column; 
-            height: 100%; 
-            width: 100%; 
-            background: linear-gradient(180deg, rgba(0,40,10,0.9), rgba(0,80,20,0.95)), url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1000&auto=format&fit=crop') center/cover;
-            background-blend-mode: multiply;
-        }
-        
+        /* شاشة اللعبة */
+        #game-screen { display: none; flex-direction: column; height: 100%; width: 100%; position: relative; }
         .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px; color: white; }
-        .back-btn { font-size: 24px; cursor: pointer; color: #fff; }
-        .balance-box { display: flex; align-items: center; background: #111; border: 1px solid #333; border-radius: 20px; padding: 5px 5px 5px 15px; gap: 10px; }
-        .balance-text { font-size: 14px; font-weight: bold; color: #fff; }
-        .add-funds-btn { background: #cc0000; color: white; border: none; width: 25px; height: 25px; border-radius: 50%; font-weight: bold; font-size: 18px; cursor: pointer; display: flex; justify-content: center; align-items: center; }
-        
-        .game-title { text-align: center; color: white; font-size: 16px; margin: 5px 0 15px 0; letter-spacing: 1px; }
+        .back-arrow { font-size: 24px; cursor: pointer; color: #fff; width: 30px; }
+        .balance-box { display: flex; align-items: center; background: #000; border-radius: 20px; padding: 4px 4px 4px 15px; gap: 15px; border: 1px solid #333; }
+        .balance-text { font-size: 14px; font-weight: 500; color: #fff; }
+        .add-funds-btn { background: #00b359; color: white; border: none; width: 28px; height: 28px; border-radius: 50%; font-weight: bold; font-size: 20px; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+        .top-icons { display: flex; gap: 15px; align-items: center; }
+        .top-icons span { font-size: 22px; cursor: pointer; opacity: 0.9; }
 
-        .game-area { display: flex; padding: 0 10px; flex-grow: 1; gap: 5px; overflow-y: auto; padding-bottom: 10px;}
+        .game-title { text-align: center; color: white; font-size: 14px; margin: 5px 0 15px 0; letter-spacing: 1px; font-weight: 500;}
+
+        .game-area { display: flex; padding: 0 15px; flex-grow: 1; gap: 10px; overflow-y: auto; padding-bottom: 10px; }
         
         .multiplier-col { display: flex; flex-direction: column-reverse; justify-content: space-between; width: 55px; padding: 5px 0; }
-        .mult-box { border-radius: 15px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; font-weight: bold; text-align: center; padding: 5px 0; }
-        .mult-box.active { background: #00c853; color: white; }
+        .mult-box { background: rgba(10, 30, 15, 0.7); border-radius: 12px; color: #fff; font-size: 11px; font-weight: 500; text-align: center; padding: 6px 0; border: 1px solid rgba(255,255,255,0.1); }
+        .mult-box.active { background: #00b359; color: white; border-color: #00b359; box-shadow: 0 0 10px rgba(0, 179, 89, 0.4); }
 
-        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; flex-grow: 1; }
-        
-        .barrel { 
-            aspect-ratio: 1; 
-            background: radial-gradient(circle at 30% 30%, #a0522d, #4a1c00); 
-            border: 2px solid #2b0d00; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            box-shadow: inset 0 -4px 6px rgba(0,0,0,0.6), 0 2px 4px rgba(0,0,0,0.4);
-            display: flex; justify-content: center; align-items: center; font-size: 24px;
-            transition: transform 0.1s;
-        }
-        .barrel:active { transform: scale(0.9); }
+        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; flex-grow: 1; }
+        .barrel { aspect-ratio: 1; background: radial-gradient(circle at 40% 40%, #c06938, #6d310d, #3a1500); border: 1px solid #2b0d00; border-radius: 50%; cursor: pointer; box-shadow: inset 0 -3px 5px rgba(0,0,0,0.5), 0 3px 5px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; font-size: 24px; transition: transform 0.1s; }
+        .barrel:active { transform: scale(0.95); }
         .barrel.opened { background: radial-gradient(circle at 30% 30%, #4caf50, #1b5e20); border-color: #0a2a0a; }
         .barrel.opened.bad { background: radial-gradient(circle at 30% 30%, #e6c280, #a67c00); border-color: #4a3000; }
 
-        .controls { background: rgba(40, 40, 40, 0.95); padding: 15px; border-top-left-radius: 15px; border-top-right-radius: 15px; }
+        /* لوحة التحكم السفلية */
+        .controls { padding: 10px 15px 20px 15px; }
         
-        .btn-row { display: flex; gap: 8px; margin-bottom: 10px; }
-        .ctrl-btn { flex: 1; padding: 10px 0; background: #883333; color: #fff; border: none; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; }
-        .ctrl-btn:active { background: #aa4444; }
+        /* إظهار إجمالي الأرباح */
+        .current-winnings-text { text-align: center; color: #fff; font-size: 14px; font-weight: bold; margin-bottom: 10px; display: none; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .current-winnings-text span { color: #00ff55; }
+
+        .btn-row { display: flex; gap: 8px; margin-bottom: 12px; }
+        .ctrl-btn { flex: 1; padding: 12px 0; background: #00b359; color: #fff; border: none; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; }
+        .ctrl-btn:active { background: #00964b; }
         
-        .stake-container { display: flex; background: #222; border-radius: 8px; overflow: hidden; height: 50px; }
-        .stake-input { flex: 1; background: none; border: none; color: white; font-size: 18px; padding: 10px; outline: none; text-align: center; font-weight: bold;}
+        .stake-container { display: flex; background: rgba(40, 50, 45, 0.9); border-radius: 8px; overflow: hidden; height: 60px; align-items: center; padding: 5px; }
+        .stake-input-area { flex: 1; display: flex; flex-direction: column; padding-left: 15px; }
+        .stake-input { background: none; border: none; color: white; font-size: 20px; outline: none; font-weight: 500; width: 100%;}
+        .stake-limits { font-size: 10px; color: #aaa; margin-top: 2px; }
         
-        .action-btn { padding: 0 25px; border: none; color: white; font-weight: bold; font-size: 16px; cursor: pointer; }
-        .btn-stake { background: #cc0000; }
+        .btn-stake { background: #00b359; color: white; border: none; border-radius: 6px; padding: 0 25px; height: 100%; font-weight: 700; font-size: 15px; cursor: pointer; }
         .btn-cashout { background: #cc0000; display: none; }
 
+        .bottom-nav { display: flex; justify-content: space-between; align-items: center; background: #111; padding: 15px 25px; color: #fff; font-size: 13px; font-weight: 500; border-top: 1px solid #222; }
+        .nav-item { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+
+        /* شاشات النتيجة */
         .overlay-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 100; }
         .win-text { color: #00ff55; font-size: 40px; font-weight: bold; margin-bottom: 10px; text-shadow: 0 0 20px #00ff55; }
         .lose-text { color: #fff; font-size: 24px; font-weight: bold; margin-bottom: 10px; }
         .win-amount { color: #fff; font-size: 20px; margin-bottom: 30px; }
-        
         .overlay-btns { width: 80%; display: flex; flex-direction: column; gap: 10px; }
         .overlay-btn { padding: 15px; border-radius: 10px; border: none; font-weight: bold; font-size: 16px; cursor: pointer; }
         .btn-play-again { background: #cc0000; color: white; }
         .btn-new-stake { background: transparent; color: white; border: 1px solid #fff; }
-        
         .hide { display: none !important; }
     </style>
 </head>
 <body>
-
     <div class="app-container">
         
         <!-- شاشة الدخول -->
         <div id="login-screen">
-            <div class="logo-container">
-                <div class="logo-text"><span>LINE</span><br>BET</div>
-            </div>
-            <div class="telegram-link">My User Telegram : @SPIDERMAN2714</div>
-            
-            <div class="input-group">
-                <input type="email" placeholder="Email">
-            </div>
-            <div class="input-group">
-                <input type="password" placeholder="Password">
-            </div>
-            
-            <button class="btn-login" onclick="goToGame()">LOGIN</button>
-            <button class="btn-admin" onclick="showAdminScreen()">ادمن فلوس</button>
+            <div class="logo-container"><div class="logo-text"><span>LINE</span><br>BET</div></div>
+            <div class="input-group"><input type="email" placeholder="Email" value="admin@test.com"></div>
+            <div class="input-group"><input type="password" placeholder="Password" value="123456"></div>
+            <button class="btn-login" onclick="goToGame()">تسجيل الدخول</button>
         </div>
 
         <!-- شاشة الأدمن -->
         <div id="admin-screen">
-            <h2 class="admin-title">اكتب عدد الاموال</h2>
-            <input type="number" id="adminAmount" class="admin-input" placeholder="0.00">
-            <button class="btn-send-money" onclick="sendMoney()">ارسال الاموال</button>
+            <h2 class="admin-title">اكتب المبلغ المراد إضافته</h2>
+            <input type="number" id="adminAmount" class="admin-input" placeholder="150">
+            <button class="btn-send-money" onclick="sendMoney()">إرسال الأموال</button>
+            <div class="btn-back" onclick="goToGame()">رجوع</div>
         </div>
 
         <!-- شاشة اللعبة -->
         <div id="game-screen">
+            
             <div class="top-bar">
-                <div class="back-btn" onclick="goBackToLogin()">↩</div>
+                <div class="back-arrow" onclick="goBackToLogin()">&#8592;</div>
                 <div class="balance-box">
                     <div class="balance-text"><span id="balanceDisplay">0.00</span> ج.م</div>
                     <button class="add-funds-btn" onclick="showAdminScreen()">+</button>
                 </div>
-                <div style="width: 24px;"></div>
+                <div class="top-icons">
+                    <span onclick="showAdminScreen()">⚙️</span>
+                    <span>ℹ️</span>
+                </div>
             </div>
 
             <div class="game-title">APPLE OF FORTUNE</div>
@@ -165,19 +127,33 @@
             </div>
 
             <div class="controls">
+                <!-- شريط إجمالي الأرباح اللي بيظهر وقت اللعب -->
+                <div class="current-winnings-text" id="currentWinningsText">
+                    CURRENT WINNINGS: <span id="currentWinningsAmount">0.00</span> ج.م
+                </div>
+
                 <div class="btn-row">
                     <button class="ctrl-btn" onclick="setStake('min')">MIN</button>
                     <button class="ctrl-btn" onclick="setStake('x2')">X2</button>
                     <button class="ctrl-btn" onclick="setStake('/2')">X/2</button>
                     <button class="ctrl-btn" onclick="setStake('max')">MAX</button>
                 </div>
+                
                 <div class="stake-container">
-                    <input type="number" id="stakeAmount" class="stake-input" value="150" min="10">
-                    <button class="action-btn btn-stake" id="stakeBtn" onclick="startGame()">STAKE</button>
-                    <button class="action-btn btn-cashout" id="cashoutBtn" onclick="cashOut()">TAKE WINNINGS</button>
+                    <div class="stake-input-area">
+                        <input type="number" id="stakeAmount" class="stake-input" value="150">
+                        <div class="stake-limits">min 10 ج.م - max 66319.77 ج.م</div>
+                    </div>
+                    <button class="btn-stake" id="stakeBtn" onclick="startGame()">STAKE</button>
+                    <button class="btn-stake btn-cashout" id="cashoutBtn" onclick="cashOut()">TAKE WINNINGS</button>
                 </div>
             </div>
-            
+
+            <div class="bottom-nav">
+                <div class="nav-item">⚙️ SETTINGS</div>
+                <div class="nav-item">⚡ ONE-CLICK</div>
+            </div>
+
             <div class="overlay-screen" id="resultScreen">
                 <div id="resultTitle" class="win-text">Win</div>
                 <div id="resultAmount" class="win-amount">You Won 0.00 ج.م</div>
@@ -186,12 +162,13 @@
                     <button class="overlay-btn btn-new-stake" onclick="closeResultAndNewStake()">NEW STAKE</button>
                 </div>
             </div>
+
         </div>
     </div>
 
     <script>
         const multipliers = [1.23, 1.54, 1.93, 2.41, 4.02, 6.71, 11.18, 27.92, 69.93, 349.68];
-        let currentBalance = 0.00;
+        let currentBalance = 0.00; 
         let gameActive = false;
         let currentRow = 0;
         let currentMultiplier = 1.23;
@@ -199,10 +176,9 @@
         let lastStakeValue = 150;
 
         function showAdminScreen() {
-            document.getElementById('login-screen').style.display = 'none';
             document.getElementById('game-screen').style.display = 'none';
             document.getElementById('admin-screen').style.display = 'flex';
-            document.getElementById('adminAmount').value = '';
+            document.getElementById('adminAmount').value = '150'; 
         }
 
         function goToGame() {
@@ -220,17 +196,17 @@
 
         function sendMoney() {
             let amount = parseFloat(document.getElementById('adminAmount').value);
-            if (amount > 0) {
-                currentBalance += amount;
-                updateBalance();
+            if (amount > 0) { 
+                currentBalance += amount; 
+                updateBalance(); 
                 goToGame(); 
-            } else {
-                alert("ادخل مبلغ صحيح");
+            } else { 
+                alert("ادخل مبلغ صحيح"); 
             }
         }
 
-        function updateBalance() {
-            document.getElementById('balanceDisplay').innerText = currentBalance.toFixed(2);
+        function updateBalance() { 
+            document.getElementById('balanceDisplay').innerText = currentBalance.toFixed(2); 
         }
 
         function initGame() {
@@ -247,6 +223,7 @@
                 span.className = 'mult-box';
                 span.id = 'mult-' + index;
                 span.innerText = 'x' + m;
+                if (index === 0) span.classList.add('active');
                 col.appendChild(span);
             });
         }
@@ -277,47 +254,35 @@
 
         function startGame() {
             let stake = parseFloat(document.getElementById('stakeAmount').value);
-            
-            if (stake > currentBalance) {
-                alert("Insufficient balance! Click (+) to add funds.");
-                return;
-            }
-            if (stake < 10) {
-                alert("Minimum stake is 10 EGP.");
-                return;
-            }
+            if (stake > currentBalance) { alert("Insufficient balance! Click (+) to add funds."); return; }
+            if (stake < 10) { alert("Minimum stake is 10 EGP."); return; }
 
-            // ==========================================
-            // هنا بقى الربط السحري مع زيرو بيت!
-            // ==========================================
             let savedPreds = localStorage.getItem('zeroBetPreds');
-            
             if (savedPreds) {
                 predictions = JSON.parse(savedPreds);
-                console.log("متصل بنجاح مع زيرو بيت. التوقعات:", predictions);
             } else {
-                // لو مفيش توقعات متسجلة، اللعبة هتولّد مسار عشوائي عشان متقفش
                 predictions = [];
                 for (let i = 0; i < 10; i++) predictions.push(Math.floor(Math.random() * 5));
-                console.log("لم يتم العثور على توقعات. تم توليد مسار عشوائي.");
-                alert("تنبيه: من فضلك افتح تطبيق ZERO BET أولاً للحصول على التوقعات!");
+                alert("من فضلك افتح ZERO BET أولاً للحصول على التوقعات!");
             }
 
             lastStakeValue = stake;
-            currentBalance -= stake;
+            currentBalance -= stake; // خصم الرهان
             updateBalance();
             
             gameActive = true;
             currentRow = 0;
             currentMultiplier = multipliers[0];
             
-            document.querySelectorAll('.barrel').forEach(b => {
-                b.classList.remove('opened', 'bad');
-                b.innerText = '';
-            });
+            document.querySelectorAll('.barrel').forEach(b => { b.classList.remove('opened', 'bad'); b.innerText = ''; });
             document.querySelectorAll('.mult-box').forEach(m => m.classList.remove('active'));
-            
-            document.getElementById('stakeBtn').classList.add('hide');
+            document.getElementById('mult-0').classList.add('active');
+
+            // إظهار شريط الأرباح
+            document.getElementById('currentWinningsText').style.display = 'block';
+            document.getElementById('currentWinningsAmount').innerText = stake.toFixed(2); // في البداية المكسب هو الرهان نفسه
+
+            document.getElementById('stakeBtn').style.display = 'none';
             document.getElementById('cashoutBtn').style.display = 'block';
             document.getElementById('resultScreen').style.display = 'none';
         }
@@ -328,21 +293,26 @@
             if (el.classList.contains('opened')) return;
 
             let isWinner = (col === predictions[row]);
-            
             el.classList.add('opened');
             
             if (isWinner) {
                 el.innerText = '🍎';
                 currentMultiplier = multipliers[currentRow];
-                document.getElementById('mult-' + currentRow).classList.add('active');
-                currentRow++;
                 
-                if (currentRow === 10) {
-                    cashOut(); 
+                // تحديث الأرباح الحالية
+                let currentWinnings = lastStakeValue * currentMultiplier;
+                document.getElementById('currentWinningsAmount').innerText = currentWinnings.toFixed(2);
+
+                document.querySelectorAll('.mult-box').forEach(m => m.classList.remove('active'));
+                if(currentRow < 9) {
+                    document.getElementById('mult-' + (currentRow + 1)).classList.add('active');
                 }
+                
+                currentRow++;
+                if (currentRow === 10) { cashOut(); }
             } else {
                 el.classList.add('bad');
-                el.innerText = '💥'; 
+                el.innerText = '💀'; 
                 gameActive = false;
                 setTimeout(() => { showResult(false); }, 500);
             }
@@ -350,11 +320,9 @@
 
         function cashOut() {
             if (!gameActive && currentRow === 0) return;
-            
             let winnings = lastStakeValue * currentMultiplier;
-            currentBalance += winnings;
+            currentBalance += winnings; // إضافة الأرباح للرصيد
             updateBalance();
-            
             gameActive = false;
             showResult(true, winnings);
         }
@@ -363,20 +331,17 @@
             let resultScreen = document.getElementById('resultScreen');
             let title = document.getElementById('resultTitle');
             let amountText = document.getElementById('resultAmount');
-            
             document.getElementById('lastStake').innerText = lastStakeValue.toFixed(2);
 
             if (isWin) {
-                title.innerText = "Win";
-                title.className = "win-text";
+                title.innerText = "Win"; title.className = "win-text";
                 amountText.innerText = `You Won ${amount.toFixed(2)} ج.م`;
             } else {
-                title.innerText = "Better luck next time!";
-                title.className = "lose-text";
+                title.innerText = "Better luck next time!"; title.className = "lose-text";
                 amountText.innerText = "Try again";
             }
-            
             resultScreen.style.display = 'flex';
+            document.getElementById('currentWinningsText').style.display = 'none'; // إخفاء شريط الأرباح
         }
 
         function playAgain() {
@@ -388,18 +353,15 @@
         function closeResultAndNewStake() {
             document.getElementById('resultScreen').style.display = 'none';
             resetGameState();
-            document.querySelectorAll('.barrel').forEach(b => {
-                b.classList.remove('opened', 'bad');
-                b.innerText = '';
-            });
-            document.querySelectorAll('.mult-box').forEach(m => m.classList.remove('active'));
+            document.querySelectorAll('.barrel').forEach(b => { b.classList.remove('opened', 'bad'); b.innerText = ''; });
         }
 
         function resetGameState() {
             gameActive = false;
             currentRow = 0;
             document.getElementById('cashoutBtn').style.display = 'none';
-            document.getElementById('stakeBtn').classList.remove('hide');
+            document.getElementById('stakeBtn').style.display = 'block';
+            document.getElementById('currentWinningsText').style.display = 'none'; // إخفاء شريط الأرباح
         }
     </script>
 </body>
